@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import crypto from 'crypto';
+import type { SupabaseClient, User } from '@supabase/supabase-js';
 import { planFromVariantName, type PlanId } from '@/lib/lemonsqueezy';
 
 type LemonEvent = {
@@ -65,12 +66,36 @@ async function syncSubscription(
     return;
   }
 
-  // Fallback: match by email via auth admin (requires service role)
-  const { data: users } = await supabase.auth.admin.listUsers();
-  const match = users?.users?.find((u) => u.email === email);
+  const match = await findUserByEmail(supabase, email);
   if (match) {
     await supabase.from('subscriptions').upsert({ user_id: match.id, ...row });
   }
+}
+
+async function findUserByEmail(
+  supabase: SupabaseClient,
+  email: string
+): Promise<User | null> {
+  const perPage = 1000;
+  let page = 1;
+
+  while (true) {
+    const { data, error } = await supabase.auth.admin.listUsers({ page, perPage });
+    if (error) {
+      console.error('[lemonsqueezy] listUsers failed:', error.message);
+      return null;
+    }
+
+    const match = data.users.find(
+      (u: User) => u.email?.toLowerCase() === email.toLowerCase()
+    );
+    if (match) return match;
+
+    if (data.users.length < perPage) break;
+    page += 1;
+  }
+
+  return null;
 }
 
 export async function POST(req: NextRequest) {

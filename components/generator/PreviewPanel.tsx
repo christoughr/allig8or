@@ -57,7 +57,7 @@ export default function PreviewPanel({
           srcDoc={preview.content}
           className="w-full flex-1 border-none"
           title="Preview"
-          sandbox="allow-scripts allow-same-origin"
+          sandbox="allow-scripts"
         />
       </div>
     );

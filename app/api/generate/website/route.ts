@@ -1,7 +1,23 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { generateWithClaude } from '@/lib/claude';
+import {
+  checkRateLimit,
+  getClientIp,
+  rateLimitExceededResponse,
+} from '@/lib/rateLimit';
 
 export async function POST(req: NextRequest) {
+  const ip = getClientIp(req);
+  const { allowed, remaining, resetAt } = checkRateLimit(ip);
+
+  if (!allowed) {
+    const { status, headers } = rateLimitExceededResponse(resetAt);
+    return NextResponse.json(
+      { error: 'Rate limit exceeded. Try again later.' },
+      { status, headers }
+    );
+  }
+
   try {
     const { prompt, history } = await req.json();
 
@@ -10,7 +26,10 @@ export async function POST(req: NextRequest) {
     }
 
     const html = await generateWithClaude(prompt, 'website', history ?? []);
-    return NextResponse.json({ html });
+    return NextResponse.json(
+      { html },
+      { headers: { 'X-RateLimit-Remaining': String(remaining) } }
+    );
   } catch (error) {
     console.error('Website generation failed:', error);
     return NextResponse.json({ error: 'Generation failed' }, { status: 500 });

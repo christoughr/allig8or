@@ -4,8 +4,24 @@ import {
   generatePPTX,
   type PresentationData,
 } from '@/lib/generators/presentation';
+import {
+  checkRateLimit,
+  getClientIp,
+  rateLimitExceededResponse,
+} from '@/lib/rateLimit';
 
 export async function POST(req: NextRequest) {
+  const ip = getClientIp(req);
+  const { allowed, remaining, resetAt } = checkRateLimit(ip);
+
+  if (!allowed) {
+    const { status, headers } = rateLimitExceededResponse(resetAt);
+    return NextResponse.json(
+      { error: 'Rate limit exceeded. Try again later.' },
+      { status, headers }
+    );
+  }
+
   try {
     const { prompt, history } = await req.json();
 
@@ -24,10 +40,13 @@ export async function POST(req: NextRequest) {
     const base64 = buffer.toString('base64');
     const dataUrl = `data:application/vnd.openxmlformats-officedocument.presentationml.presentation;base64,${base64}`;
 
-    return NextResponse.json({
-      fileUrl: dataUrl,
-      fileName: `${data.title || 'presentation'}.pptx`,
-    });
+    return NextResponse.json(
+      {
+        fileUrl: dataUrl,
+        fileName: `${data.title || 'presentation'}.pptx`,
+      },
+      { headers: { 'X-RateLimit-Remaining': String(remaining) } }
+    );
   } catch (error) {
     console.error('Presentation generation failed:', error);
     return NextResponse.json({ error: 'Generation failed' }, { status: 500 });
