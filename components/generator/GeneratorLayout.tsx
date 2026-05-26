@@ -8,9 +8,16 @@ import type { ToolType } from '@/types';
 
 export type { ToolType };
 
+type AppState =
+  | { status: 'idle' }
+  | { status: 'generating' }
+  | { status: 'done' }
+  | { status: 'error'; message: string }
+  | { status: 'rate_limited'; retryAfter: number };
+
 export default function GeneratorLayout() {
   const [activeTool, setActiveTool] = useState<ToolType>('website');
-  const [isGenerating, setIsGenerating] = useState(false);
+  const [appState, setAppState] = useState<AppState>({ status: 'idle' });
   const [preview, setPreview] = useState<{
     type: 'html' | 'file';
     content?: string;
@@ -18,18 +25,12 @@ export default function GeneratorLayout() {
     fileName?: string;
   } | null>(null);
   const [messages, setMessages] = useState<
-    Array<{
-      role: 'user' | 'assistant';
-      content: string;
-      fileUrl?: string;
-    }>
+    Array<{ role: 'user' | 'assistant'; content: string; fileUrl?: string }>
   >([]);
 
   const handleGenerate = async (prompt: string) => {
-    setIsGenerating(true);
-
-    const userMessage = { role: 'user' as const, content: prompt };
-    setMessages((prev) => [...prev, userMessage]);
+    setAppState({ status: 'generating' });
+    setMessages((prev) => [...prev, { role: 'user', content: prompt }]);
 
     try {
       const response = await fetch(`/api/generate/${activeTool}`, {
@@ -37,21 +38,26 @@ export default function GeneratorLayout() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           prompt,
-          history: messages.map((m) => ({
-            role: m.role,
-            content: m.content,
-          })),
+          history: messages.map((m) => ({ role: m.role, content: m.content })),
         }),
       });
 
       const result = await response.json();
 
+      if (response.status === 429) {
+        const retryAfter = parseInt(response.headers.get('Retry-After') ?? '60', 10);
+        setAppState({ status: 'rate_limited', retryAfter });
+        setMessages((prev) => [
+          ...prev,
+          {
+            role: 'assistant',
+            content: `Rate limit reached. Free plan allows 10 generations/hour. Try again in ${retryAfter}s, or upgrade to Pro for 200/day.`,
+          },
+        ]);
+        return;
+      }
+
       if (!response.ok) {
-        if (response.status === 429) {
-          throw new Error(
-            'Rate limit reached (10/hour). Try again later or upgrade your plan.'
-          );
-        }
         throw new Error(result.error || 'Generation failed');
       }
 
@@ -68,8 +74,8 @@ export default function GeneratorLayout() {
             role: 'assistant',
             content:
               activeTool === 'website'
-                ? '✅ Website generated! Preview on the right. Tell me what to change.'
-                : '✅ PDF-ready document generated! Preview on the right or download the HTML.',
+                ? 'Done — preview on the right. Tell me what to change.'
+                : 'PDF-ready HTML generated. Preview on the right or download.',
             fileUrl: result.fileUrl,
           },
         ]);
@@ -83,33 +89,44 @@ export default function GeneratorLayout() {
           ...prev,
           {
             role: 'assistant',
-            content: `✅ Your ${activeTool} is ready! Click download to get the file.`,
+            content: `Your ${activeTool} is ready.`,
             fileUrl: result.fileUrl,
           },
         ]);
       }
-    } catch {
+
+      setAppState({ status: 'done' });
+    } catch (err) {
+      const message = err instanceof Error ? err.message : 'Something went wrong.';
+      setAppState({ status: 'error', message });
       setMessages((prev) => [
         ...prev,
-        {
-          role: 'assistant',
-          content: '❌ Something went wrong. Please try again.',
-        },
+        { role: 'assistant', content: `Error: ${message} Please try again.` },
       ]);
-    } finally {
-      setIsGenerating(false);
     }
   };
 
+  const isGenerating = appState.status === 'generating';
+
   return (
-    <div className="flex h-screen flex-col bg-[#0a0f0d]">
-      <ToolSelector activeTool={activeTool} onSelect={setActiveTool} />
-      <div className="flex flex-1 overflow-hidden">
+    <div className="flex h-[100dvh] flex-col bg-[#0a0f0d]">
+      <ToolSelector
+        activeTool={activeTool}
+        onSelect={(tool) => {
+          setActiveTool(tool);
+          setPreview(null);
+          setMessages([]);
+          setAppState({ status: 'idle' });
+        }}
+      />
+      {/* Mobile: stack vertically; desktop: side by side */}
+      <div className="flex flex-1 flex-col overflow-hidden md:flex-row">
         <ChatPanel
           messages={messages}
           isGenerating={isGenerating}
           onSubmit={handleGenerate}
           activeTool={activeTool}
+          appState={appState}
         />
         <PreviewPanel preview={preview} activeTool={activeTool} />
       </div>

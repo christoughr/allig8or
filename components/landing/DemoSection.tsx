@@ -1,33 +1,43 @@
 const tools = [
   {
-    icon: '🌐',
-    title: 'Websites',
-    desc: 'Landing pages, portfolios, product pages — live preview instantly.',
-    accent: 'from-blue-500/20 to-cyan-500/10',
+    label: 'Website',
+    format: 'HTML · live preview',
+    desc: 'Landing pages, portfolios, SaaS pages — full Tailwind, responsive, downloadable.',
+    color: 'border-blue-500/20 hover:border-blue-500/40',
+    dot: 'bg-blue-400',
+    tag: 'bg-blue-500/10 text-blue-300',
   },
   {
-    icon: '📊',
-    title: 'Presentations',
-    desc: 'Pitch decks and slide decks exported as .pptx.',
-    accent: 'from-violet-500/20 to-purple-500/10',
+    label: 'Slides',
+    format: '.pptx',
+    desc: 'Pitch decks, product updates, investor decks — themed, multi-layout, speaker notes.',
+    color: 'border-violet-500/20 hover:border-violet-500/40',
+    dot: 'bg-violet-400',
+    tag: 'bg-violet-500/10 text-violet-300',
   },
   {
-    icon: '📈',
-    title: 'Spreadsheets',
-    desc: 'Budgets, trackers, models — formatted .xlsx ready to edit.',
-    accent: 'from-emerald-500/20 to-teal-500/10',
+    label: 'Spreadsheet',
+    format: '.xlsx',
+    desc: 'Budgets, models, trackers — formatted headers, formulas, alternate row shading.',
+    color: 'border-emerald-500/20 hover:border-emerald-500/40',
+    dot: 'bg-emerald-400',
+    tag: 'bg-emerald-500/10 text-emerald-300',
   },
   {
-    icon: '📝',
-    title: 'Documents',
-    desc: 'Proposals, reports, contracts — professional .docx output.',
-    accent: 'from-amber-500/20 to-orange-500/10',
+    label: 'Document',
+    format: '.docx',
+    desc: 'Proposals, SOPs, reports — headings, bullet lists, tables, professional layout.',
+    color: 'border-amber-500/20 hover:border-amber-500/40',
+    dot: 'bg-amber-400',
+    tag: 'bg-amber-500/10 text-amber-300',
   },
   {
-    icon: '📄',
-    title: 'PDF-ready',
-    desc: 'Invoices and formal docs styled for print.',
-    accent: 'from-rose-500/20 to-pink-500/10',
+    label: 'PDF-ready',
+    format: 'HTML → print',
+    desc: 'Invoices, briefs, contracts — A4 layout, inline styles, print-optimised.',
+    color: 'border-rose-500/20 hover:border-rose-500/40',
+    dot: 'bg-rose-400',
+    tag: 'bg-rose-500/10 text-rose-300',
   },
 ];
 
@@ -39,29 +49,31 @@ export default function DemoSection() {
           <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl">
             Five tools. One conversation.
           </h2>
-          <p className="mt-4 text-lg text-zinc-400">
-            Replace the tab-switching chaos of M365 and Google Workspace with a
-            single AI workspace.
+          <p className="mt-4 text-base text-zinc-400">
+            Replace the tab-switching chaos of M365 and Google Workspace.
           </p>
         </div>
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+
+        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
           {tools.map((tool) => (
             <div
-              key={tool.title}
-              className="group relative overflow-hidden rounded-2xl border border-white/10 bg-zinc-900/40 p-6 transition hover:border-emerald-500/30 hover:bg-zinc-900/60"
+              key={tool.label}
+              className={`group rounded-2xl border bg-zinc-900/30 p-6 transition duration-200 ${tool.color}`}
             >
-              <div
-                className={`absolute inset-0 bg-gradient-to-br ${tool.accent} opacity-0 transition group-hover:opacity-100`}
-              />
-              <div className="relative">
-                <span className="text-3xl">{tool.icon}</span>
-                <h3 className="mt-4 text-lg font-semibold text-white">
-                  {tool.title}
-                </h3>
-                <p className="mt-2 text-sm leading-relaxed text-zinc-400">
-                  {tool.desc}
-                </p>
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <span className={`h-2 w-2 rounded-full ${tool.dot}`} />
+                  <span className="text-base font-semibold text-white">
+                    {tool.label}
+                  </span>
+                </div>
+                <span className={`rounded-full px-2.5 py-0.5 text-xs font-medium ${tool.tag}`}>
+                  {tool.format}
+                </span>
               </div>
+              <p className="mt-4 text-sm leading-relaxed text-zinc-400">
+                {tool.desc}
+              </p>
             </div>
           ))}
         </div>

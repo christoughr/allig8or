@@ -14,6 +14,12 @@ export default function Header() {
         </Link>
         <nav className="flex items-center gap-3">
           <Link
+            href="#how-it-works"
+            className="hidden text-sm text-zinc-400 transition hover:text-white sm:inline"
+          >
+            How it works
+          </Link>
+          <Link
             href="#tools"
             className="hidden text-sm text-zinc-400 transition hover:text-white sm:inline"
           >
