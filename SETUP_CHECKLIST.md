@@ -1,4 +1,8 @@
-# allig8or — 30분 셋업 체크리스트
+# allig8or — 단계별 셋업 (천천히)
+
+> **계정 정리:** GitHub = `christoughr` · Vercel 팀 = **`onlyus`** (christoughr 계정)  
+> 대시보드: https://vercel.com/onlyus/allig8or  
+> 프로덕션 URL: https://allig8or-lovat.vercel.app
 
 ## 현재 상태
 
@@ -6,13 +10,53 @@
 |------|------|
 | 코드 P0 | ✅ |
 | GitHub | https://github.com/christoughr/allig8or |
-| Vercel 배포 | https://allig8or.vercel.app |
-| Vercel env | ⚠️ 비어 있음 → generator 안 돌아감 |
-| 로컬 `.env.local` | Anthropic + Supabase 있음 / Lemon Squeezy 없음 / Stripe 키 잔여 |
+| Vercel | **onlyus/allig8or** — GitHub `christoughr/allig8or` 연결됨 ✅ |
+| 프로덕션 URL | https://allig8or-lovat.vercel.app |
+| Vercel env | `ANTHROPIC_API_KEY` 아직 없으면 generator 안 돌아감 |
 
 ---
 
-## 1. Vercel env (5분) — 최우선
+## Step 1 — Vercel 프로젝트 ✅ (완료)
+
+CLI에서 **onlyus/allig8or** 생성 + `christoughr/allig8or` Git 연결 + 배포 완료.
+
+브라우저에서 확인:
+1. https://vercel.com/onlyus/allig8or
+2. 팀이 **onlyus**인지 확인 (christoughr 계정)
+
+**다음:** Step 2 — `ANTHROPIC_API_KEY`만 추가 (본인이 Vercel UI에서)
+
+---
+
+## Step 2 — Vercel env: Anthropic만 (다음 단계, Step 1 후)
+
+**목표:** 생성기만 돌아가게 — 키 1개만.
+
+1. Vercel → allig8or → **Settings → Environment Variables**
+2. Add:
+   - Name: `ANTHROPIC_API_KEY`
+   - Value: `sk-ant-...` (console.anthropic.com)
+   - Environments: Production + Preview
+3. **Deployments** → 최신 → **Redeploy**
+4. https://allig8or.vercel.app/app → 짧은 프롬프트 테스트
+
+---
+
+## Step 3 — Lemon Squeezy (Step 2 성공 후)
+
+(상세는 Step 2 끝난 뒤 진행)
+
+---
+
+## Step 4 — Supabase (Step 3 또는 병행 가능)
+
+(상세는 Step 2 끝난 뒤 진행)
+
+---
+
+<!-- 아래는 참고용 전체 목록 -->
+
+## 1. Vercel env (전체 — 나중에)
 
 **최소 1개만 있어도 generator 동작:**
 ```
