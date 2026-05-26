@@ -47,6 +47,11 @@ export default function GeneratorLayout() {
       const result = await response.json();
 
       if (!response.ok) {
+        if (response.status === 429) {
+          throw new Error(
+            'Rate limit reached (10/hour). Try again later or upgrade your plan.'
+          );
+        }
         throw new Error(result.error || 'Generation failed');
       }
 
@@ -97,7 +102,7 @@ export default function GeneratorLayout() {
   };
 
   return (
-    <div className="flex h-screen flex-col bg-gray-50">
+    <div className="flex h-screen flex-col bg-[#0a0f0d]">
       <ToolSelector activeTool={activeTool} onSelect={setActiveTool} />
       <div className="flex flex-1 overflow-hidden">
         <ChatPanel

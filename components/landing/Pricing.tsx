@@ -9,57 +9,66 @@ export default function Pricing() {
   ];
 
   return (
-    <section className="bg-gray-50 px-6 py-20">
+    <section id="pricing" className="border-t border-white/5 px-6 py-24">
       <div className="mx-auto max-w-5xl">
-        <h2 className="mb-4 text-center text-3xl font-bold text-gray-900">
-          Simple pricing
-        </h2>
-        <p className="mb-12 text-center text-gray-600">
-          Used by creators, founders, and teams worldwide
-        </p>
-        <div className="grid gap-8 md:grid-cols-3">
+        <div className="mb-14 text-center">
+          <h2 className="text-3xl font-bold text-white sm:text-4xl">
+            Simple, honest pricing
+          </h2>
+          <p className="mt-4 text-zinc-400">
+            Start free. Upgrade when you ship more.
+          </p>
+        </div>
+        <div className="grid gap-6 md:grid-cols-3">
           {tiers.map(({ id, highlight }) => {
             const plan = PLANS[id];
             return (
               <div
                 key={id}
-                className={`rounded-2xl border p-8 ${
+                className={`relative rounded-2xl border p-8 ${
                   highlight
-                    ? 'border-blue-600 bg-white shadow-xl ring-2 ring-blue-600'
-                    : 'border-gray-200 bg-white'
+                    ? 'border-emerald-500/50 bg-gradient-to-b from-emerald-500/10 to-zinc-900/50 shadow-xl shadow-emerald-500/10'
+                    : 'border-white/10 bg-zinc-900/30'
                 }`}
               >
-                <h3 className="text-xl font-bold">{plan.name}</h3>
-                <p className="mt-2 text-3xl font-bold">
-                  ${plan.price}
+                {highlight && (
+                  <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-emerald-500 px-3 py-0.5 text-xs font-semibold text-[#070b09]">
+                    Popular
+                  </span>
+                )}
+                <h3 className="text-lg font-semibold text-white">{plan.name}</h3>
+                <p className="mt-3 flex items-baseline gap-1">
+                  <span className="text-4xl font-bold text-white">
+                    ${plan.price}
+                  </span>
                   {plan.price > 0 && (
-                    <span className="text-base font-normal text-gray-500">
-                      /mo
-                    </span>
+                    <span className="text-zinc-500">/mo</span>
                   )}
                 </p>
-                <ul className="mt-6 space-y-2 text-sm text-gray-600">
-                  <li>{plan.limits.generationsPerDay} generations/day</li>
-                  <li>File downloads included</li>
-                  {plan.limits.customDomain && <li>Custom domain</li>}
+                <ul className="mt-6 space-y-3 text-sm text-zinc-400">
+                  <li>{plan.limits.generationsPerDay} generations / day</li>
+                  <li>All file types & downloads</li>
+                  {plan.limits.customDomain && (
+                    <li>Custom domain support</li>
+                  )}
                   {plan.limits.teamMembers > 1 && (
-                    <li>{plan.limits.teamMembers} team members</li>
+                    <li>{plan.limits.teamMembers} team seats</li>
                   )}
                 </ul>
                 {id === 'free' ? (
                   <Link
                     href="/app"
-                    className="mt-8 block rounded-xl bg-gray-100 py-3 text-center font-medium text-gray-900 transition hover:bg-gray-200"
+                    className="mt-8 block rounded-xl border border-white/15 py-3 text-center font-medium text-white transition hover:bg-white/5"
                   >
                     Get started
                   </Link>
                 ) : (
                   <a
                     href={`/api/checkout?plan=${id}`}
-                    className={`mt-8 block rounded-xl py-3 text-center font-medium transition ${
+                    className={`mt-8 block rounded-xl py-3 text-center font-semibold transition ${
                       highlight
-                        ? 'bg-blue-600 text-white hover:bg-blue-700'
-                        : 'bg-gray-100 text-gray-900 hover:bg-gray-200'
+                        ? 'bg-emerald-500 text-[#070b09] hover:bg-emerald-400'
+                        : 'border border-white/15 text-white hover:bg-white/5'
                     }`}
                   >
                     Subscribe

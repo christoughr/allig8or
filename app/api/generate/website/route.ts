@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { generateWithClaude } from '@/lib/claude';
+import { stripHtmlFences } from '@/lib/stripHtml';
 import {
   checkRateLimit,
   getClientIp,
@@ -25,7 +26,8 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Prompt is required' }, { status: 400 });
     }
 
-    const html = await generateWithClaude(prompt, 'website', history ?? []);
+    const raw = await generateWithClaude(prompt, 'website', history ?? []);
+    const html = stripHtmlFences(raw);
     return NextResponse.json(
       { html },
       { headers: { 'X-RateLimit-Remaining': String(remaining) } }

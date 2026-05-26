@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { generateWithClaude } from '@/lib/claude';
+import { stripHtmlFences } from '@/lib/stripHtml';
 import {
   checkRateLimit,
   getClientIp,
@@ -25,7 +26,8 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Prompt is required' }, { status: 400 });
     }
 
-    const html = await generateWithClaude(prompt, 'pdf', history ?? []);
+    const raw = await generateWithClaude(prompt, 'pdf', history ?? []);
+    const html = stripHtmlFences(raw);
 
     const base64 = Buffer.from(html, 'utf-8').toString('base64');
     const dataUrl = `data:text/html;base64,${base64}`;
