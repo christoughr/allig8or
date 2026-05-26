@@ -1,36 +1,62 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# allig8or — AI Office Suite
 
-## Getting Started
+Prompt in → **Website, PPTX, XLSX, DOCX, PDF** out.
 
-First, run the development server:
+- **Landing:** `/`
+- **Generator app:** `/app`
+- **Payments:** [Lemon Squeezy](https://lemonsqueezy.com) (not Stripe)
+
+## Quick start
 
 ```bash
+cd allig8or
+cp .env.example .env.local
+# Add ANTHROPIC_API_KEY at minimum
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open http://localhost:3000
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## GitHub accounts
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| Where | Account |
+|-------|---------|
+| Browser (you mentioned) | `christoughr` / christoughr@gmail.com |
+| This machine `gh` CLI | `dearzumi` |
 
-## Learn More
+Repo lives under **dearzumi/allig8or**. To work as christoughr on this Mac:
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+gh auth login   # choose GitHub.com → christoughr
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Or stay on `dearzumi` and use the repo as collaborator (christoughr invited as admin).
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Lemon Squeezy setup
 
-## Deploy on Vercel
+1. [app.lemonsqueezy.com](https://app.lemonsqueezy.com) → Store → Products  
+   - **Pro** $29/mo → copy **Variant ID**  
+   - **Team** $79/mo → copy **Variant ID**
+2. Settings → API → create API key → `LEMONSQUEEZY_API_KEY`
+3. Settings → Webhooks → URL: `https://allig8or.com/api/webhooks/lemonsqueezy`  
+   Events: `subscription_*` → copy signing secret → `LEMONSQUEEZY_WEBHOOK_SECRET`
+4. Put store slug + variant IDs in `.env.local` / Vercel env
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Supabase
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Run `supabase_schema.sql` in SQL Editor, then add Supabase env vars.
+
+## Deploy (Vercel)
+
+```bash
+npx vercel login
+npx vercel link
+npx vercel --prod
+```
+
+Add all vars from `.env.example` in Vercel → Settings → Environment Variables.
+
+## Code review
+
+Paste `CLAUDE_REVIEW_PROMPT.md` into Claude for a structured review pass.
