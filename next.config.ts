@@ -1,7 +1,8 @@
 import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
-  serverExternalPackages: ['pptxgenjs', 'exceljs', 'docx'],
+  // pptxgenjs must be bundled — externalizing breaks on Vercel (ESM import error)
+  serverExternalPackages: ['exceljs', 'docx'],
   experimental: {
     serverActions: {
       bodySizeLimit: '10mb',

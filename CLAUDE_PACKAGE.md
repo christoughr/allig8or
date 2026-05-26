@@ -1,7 +1,8 @@
 # Claude에게 줄 것 — allig8or 전체 패키지
 
-> **한 번에 넘기기:** 이 파일 + GitHub 링크 또는 ZIP  
-> ZIP 만들 때: `node_modules`, `.next`, `.git` 제외
+> **전체 흐름(한국어):** `CLAUDE_넘기기_가이드.md` ← **여기부터 읽기**  
+> **한 번에 넘기기:** ZIP + Session A/B 커버 메시지 (가이드 안에 있음)  
+> ZIP 만들 때: `node_modules`, `.next`, `.git`, `.env.local` 제외
 
 ---
 
@@ -59,6 +60,7 @@ types/index.ts
 
 | 파일 | 용도 |
 |------|------|
+| `CLAUDE_RELEASE_READY_PROMPT.md` | **지금 추천** — 프리뷰 프레임·아이콘·Mac chrome·출력 품질 릴리스급 |
 | `CLAUDE_FULL_REVIEW_PROMPT.md` | **풀 리뷰** (점수, critical, roadmap) |
 | `CLAUDE_DESIGN_REFINEMENT_PROMPT.md` | 디자인만 깊게 |
 | `CLAUDE_REVIEW_PROMPT.md` | 보안/코드 체크리스트 |

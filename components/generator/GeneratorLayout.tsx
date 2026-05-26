@@ -5,6 +5,9 @@ import ChatPanel from './ChatPanel';
 import PreviewPanel from './PreviewPanel';
 import ToolSelector from './ToolSelector';
 import type { ToolType } from '@/types';
+import { parseApiJson } from '@/lib/parseApiResponse';
+
+const GENERATE_TIMEOUT_MS = 120_000;
 
 export type { ToolType };
 
@@ -32,6 +35,9 @@ export default function GeneratorLayout() {
     setAppState({ status: 'generating' });
     setMessages((prev) => [...prev, { role: 'user', content: prompt }]);
 
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), GENERATE_TIMEOUT_MS);
+
     try {
       const response = await fetch(`/api/generate/${activeTool}`, {
         method: 'POST',
@@ -40,9 +46,15 @@ export default function GeneratorLayout() {
           prompt,
           history: messages.map((m) => ({ role: m.role, content: m.content })),
         }),
+        signal: controller.signal,
       });
 
-      const result = await response.json();
+      const result = await parseApiJson<{
+        html?: string;
+        fileUrl?: string;
+        fileName?: string;
+        error?: string;
+      }>(response);
 
       if (response.status === 429) {
         const retryAfter = parseInt(response.headers.get('Retry-After') ?? '60', 10);
@@ -62,6 +74,9 @@ export default function GeneratorLayout() {
       }
 
       if (activeTool === 'website' || activeTool === 'pdf') {
+        if (!result.html?.trim()) {
+          throw new Error('No preview content returned. Please try again.');
+        }
         setPreview({
           type: 'html',
           content: result.html,
@@ -80,6 +95,9 @@ export default function GeneratorLayout() {
           },
         ]);
       } else {
+        if (!result.fileUrl) {
+          throw new Error('No file returned. Please try again.');
+        }
         setPreview({
           type: 'file',
           fileUrl: result.fileUrl,
@@ -97,12 +115,19 @@ export default function GeneratorLayout() {
 
       setAppState({ status: 'done' });
     } catch (err) {
-      const message = err instanceof Error ? err.message : 'Something went wrong.';
+      const message =
+        err instanceof Error && err.name === 'AbortError'
+          ? 'Request timed out after 2 minutes. Try a shorter prompt.'
+          : err instanceof Error
+            ? err.message
+            : 'Something went wrong.';
       setAppState({ status: 'error', message });
       setMessages((prev) => [
         ...prev,
         { role: 'assistant', content: `Error: ${message} Please try again.` },
       ]);
+    } finally {
+      clearTimeout(timeoutId);
     }
   };
 

@@ -1,4 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
+
+export const maxDuration = 60;
 import { generateWithClaude, parseJsonResponse } from '@/lib/claude';
 import { generateDOCX, type DocumentData } from '@/lib/generators/document';
 import {
