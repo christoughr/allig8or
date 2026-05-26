@@ -10,51 +10,61 @@
 
 ---
 
-## Step 2 — Lemon Squeezy: allig8or 스토어 Activate (지금)
+## Step 2 — Lemon Squeezy activate ✅ 제출함
 
-**사업자등록증 2개 필요 없음.** mnemonic 때와 **같은 사업자 정보**로 제출.
-
-### 할 일 (브라우저)
-
-1. https://app.lemonsqueezy.com 로그인
-2. 좌측 스토어 드롭다운 → **+ New store** (또는 Create store)
-3. Store name: `allig8or`
-4. Subdomain: `allig8or` → `allig8or.lemonsqueezy.com`
-5. **Activate your store** 클릭
-6. 설문填写:
-   - Business: **mnemonic과 동일한 법인/개인사업자**
-   - Product type: **SaaS / software subscription**
-   - Description: *AI office suite — users generate websites, slides, spreadsheets, documents via prompt*
-   - Same tax ID / same owner as mnemonic
-7. **Identity verification** — 신분증 (이미 했으면 빠를 수 있음)
-8. Submit → **1–3 business days** 대기
-
-### 승인 전에 할 수 있는 것
-
-- Test mode에서 상품 만들어 보기
-- **mnemonic** 스토어로 임시 결제 테스트 (브랜드는 mnemonic으로 보임)
-
-### 승인 후
-
-- Store slug = `allig8or` (env에 사용)
-- **「Step 2 완료」** 알려주기 → Step 3 진행
+승인 대기 (1–3 영업일). **승인 전에도 Step 3 일부 가능** (test mode 상품·webhook 설정).
 
 ---
 
-## Step 3 — Lemon Squeezy: 상품 + Vercel env (Step 2 승인 후)
+## Step 3 — Lemon Squeezy (지금)
 
-### 3a. Products (allig8or 스토어, Live mode)
+> 스토어가 아직 Test mode면 상품/webhook만 설정. **Live 결제**는 승인 후.
 
-| Product | Price | Copy variant ID |
-|---------|-------|-----------------|
-| allig8or Pro | $29/mo | → `NEXT_PUBLIC_LEMONSQUEEZY_VARIANT_PRO` |
-| allig8or Team | $79/mo | → `NEXT_PUBLIC_LEMONSQUEEZY_VARIANT_TEAM` |
+### 3a. Products (allig8or 스토어)
 
-### 3b. Webhook
+| Product | Price | Billing | → Vercel env |
+|---------|-------|---------|--------------|
+| allig8or Pro | $29 | Monthly subscription | `NEXT_PUBLIC_LEMONSQUEEZY_VARIANT_PRO` |
+| allig8or Team | $79 | Monthly subscription | `NEXT_PUBLIC_LEMONSQUEEZY_VARIANT_TEAM` |
 
-- URL: `https://allig8or.com/api/webhooks/lemonsqueezy`
-- Events: all `subscription_*`
-- Signing secret → `LEMONSQUEEZY_WEBHOOK_SECRET`
+각 상품 → Variants → **Variant ID** (UUID) 복사
+
+### 3b. Webhook — URL + 체크할 이벤트
+
+**Callback URL:**
+```
+https://allig8or.com/api/webhooks/lemonsqueezy
+```
+
+**Signing secret** 복사 → `LEMONSQUEEZY_WEBHOOK_SECRET`
+
+#### ✅ 반드시 켜야 할 이벤트 (우리 코드가 처리함)
+
+| Event | 왜 |
+|-------|-----|
+| `subscription_created` | 신규 구독 → DB sync |
+| `subscription_updated` | 플랜 변경 |
+| `subscription_resumed` | 재개 |
+| `subscription_payment_success` | 결제 성공 갱신 |
+| `subscription_cancelled` | 취소 (기간 끝까지 유지) |
+| `subscription_expired` | 만료 → free |
+
+#### 권장 추가 (지금 코드는 무시하지만 로그/알림용 — 켜도 OK)
+
+| Event | 비고 |
+|-------|------|
+| `subscription_payment_failed` | 나중에 이메일 알림용 |
+| `subscription_payment_recovered` | |
+| `subscription_paused` | |
+| `subscription_unpaused` | |
+
+#### ❌ 안 켜도 됨 (구독 SaaS에 불필요)
+
+- `order_*` (일회성 주문)
+- `license_key_*`
+- `affiliate_*`
+
+**UI에 "All subscription events" 있으면 그걸로 한 번에 선택해도 됨.**
 
 ### 3c. API key
 
