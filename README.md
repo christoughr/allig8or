@@ -18,20 +18,20 @@ npm run dev
 
 Open http://localhost:3000
 
-## GitHub accounts
+## GitHub
 
-| Where | Account |
-|-------|---------|
-| Browser (you mentioned) | `christoughr` / christoughr@gmail.com |
-| This machine `gh` CLI | `dearzumi` |
+| Item | Value |
+|------|-------|
+| Owner (target) | **christoughr** |
+| Repo | https://github.com/christoughr/allig8or (after transfer accept) |
+| Was | dearzumi/allig8or — transfer pending your email accept |
 
-Repo lives under **dearzumi/allig8or**. To work as christoughr on this Mac:
+After accepting transfer:
 
 ```bash
-gh auth login   # choose GitHub.com → christoughr
+git remote set-url origin git@github.com:christoughr/allig8or.git
+gh auth login   # log in as christoughr on this Mac
 ```
-
-Or stay on `dearzumi` and use the repo as collaborator (christoughr invited as admin).
 
 ## Lemon Squeezy setup
 
