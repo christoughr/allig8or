@@ -2,7 +2,7 @@
 
 > **계정 정리:** GitHub = `christoughr` · Vercel 팀 = **`onlyus`** (christoughr 계정)  
 > 대시보드: https://vercel.com/onlyus/allig8or  
-> 프로덕션 URL: https://allig8or-lovat.vercel.app
+> 프로덕션 URL: https://allig8or.com (DNS 설정 중) · https://allig8or-lovat.vercel.app
 
 ## 현재 상태
 
@@ -51,7 +51,7 @@ allig8or 스토어가 아직 승인 안 됐어도 **mnemonic** (이미 approved)
    - `allig8or Pro` — $29/mo subscription → **Variant ID** 복사
    - `allig8or Team` — $79/mo subscription → **Variant ID** 복사
 3. **Settings → Webhooks** → Add:
-   - URL: `https://allig8or-lovat.vercel.app/api/webhooks/lemonsqueezy`
+   - URL: `https://allig8or.com/api/webhooks/lemonsqueezy` (DNS 후) 또는 임시 `https://allig8or-lovat.vercel.app/api/webhooks/lemonsqueezy`
    - Events: `subscription_*`
    - Signing secret 복사
 4. **Settings → API** → API key 복사
@@ -68,6 +68,26 @@ NEXT_PUBLIC_LEMONSQUEEZY_VARIANT_TEAM=...
 6. Redeploy → Pricing **Subscribe** 버튼 테스트
 
 **allig8or 스토어 승인 후:** 위 3개 `NEXT_PUBLIC_LEMONSQUEEZY_*` 만 바꾸면 됨.
+
+---
+
+## Step 3b — Vercel 도메인 ✅ (CLI 완료, DNS만 남음)
+
+프로젝트에 **allig8or.com** + **www.allig8or.com** 추가됨.
+
+도메인 등록업체(name.com) DNS에 추가:
+
+| Type | Name | Value |
+|------|------|-------|
+| A | `@` | `76.76.21.21` |
+| A | `www` | `76.76.21.21` |
+
+또는 www만 CNAME: `www` → `cname.vercel-dns.com`
+
+확인: https://vercel.com/onlyus/allig8or/settings/domains  
+전파 후: https://allig8or.com
+
+`NEXT_PUBLIC_APP_URL` → `https://allig8or.com` (Vercel env 업데이트됨)
 
 ---
 
