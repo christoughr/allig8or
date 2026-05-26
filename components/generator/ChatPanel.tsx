@@ -187,14 +187,18 @@ export default function ChatPanel({
 
         {appState.status === 'rate_limited' && (
           <div className="rounded-xl border border-amber-500/20 bg-amber-500/[0.08] px-4 py-3 text-sm text-amber-300">
-            Limit reached (10/hour on free plan).{' '}
+            Generation limit reached.{' '}
+            <a href="/login?next=/app" className="font-semibold underline underline-offset-2 hover:text-amber-200">
+              Sign in
+            </a>{' '}
+            for daily limits, or{' '}
             <a
               href="/api/checkout?plan=pro"
               className="font-semibold underline underline-offset-2 hover:text-amber-200"
             >
-              Upgrade to Pro
+              upgrade to Pro
             </a>{' '}
-            for 200/day.
+            (200/day).
           </div>
         )}
 

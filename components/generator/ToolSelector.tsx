@@ -2,6 +2,8 @@
 
 import Link from 'next/link';
 import type { ToolType } from '@/types';
+import UserMenu from '@/components/auth/UserMenu';
+import { LogoMark } from '@/components/brand/Logo';
 
 // lucide-react v1.x — all icons confirmed available
 // If build fails on an icon, swap: Presentation→LayoutTemplate, Sheet→Table2, FileType→FileCode2
@@ -36,10 +38,8 @@ export default function ToolSelector({
         aria-label="allig8or home"
         className="mr-2 flex shrink-0 items-center gap-2 text-sm font-semibold text-white"
       >
-        <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-emerald-500 text-sm select-none">
-          🐊
-        </span>
-        <span className="hidden sm:inline font-heading">
+        <LogoMark className="h-8 w-8" />
+        <span className="hidden font-heading sm:inline">
           allig8<span className="text-emerald-400">or</span>
         </span>
       </Link>
@@ -66,6 +66,8 @@ export default function ToolSelector({
           );
         })}
       </div>
+
+      <UserMenu />
     </div>
   );
 }

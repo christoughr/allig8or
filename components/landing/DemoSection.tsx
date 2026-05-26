@@ -1,6 +1,9 @@
+import Link from 'next/link';
+
 const tools = [
   {
     label: 'Website',
+    tool: 'website' as const,
     format: 'HTML · live preview',
     desc: 'Landing pages, portfolios, SaaS pages — full Tailwind, responsive, downloadable.',
     color: 'border-blue-500/20 hover:border-blue-500/40',
@@ -9,6 +12,7 @@ const tools = [
   },
   {
     label: 'Slides',
+    tool: 'presentation' as const,
     format: '.pptx',
     desc: 'Pitch decks, product updates, investor decks — themed, multi-layout, speaker notes.',
     color: 'border-violet-500/20 hover:border-violet-500/40',
@@ -17,6 +21,7 @@ const tools = [
   },
   {
     label: 'Spreadsheet',
+    tool: 'spreadsheet' as const,
     format: '.xlsx',
     desc: 'Budgets, models, trackers — formatted headers, formulas, alternate row shading.',
     color: 'border-emerald-500/20 hover:border-emerald-500/40',
@@ -25,6 +30,7 @@ const tools = [
   },
   {
     label: 'Document',
+    tool: 'document' as const,
     format: '.docx',
     desc: 'Proposals, SOPs, reports — headings, bullet lists, tables, professional layout.',
     color: 'border-amber-500/20 hover:border-amber-500/40',
@@ -33,6 +39,7 @@ const tools = [
   },
   {
     label: 'PDF-ready',
+    tool: 'pdf' as const,
     format: 'HTML → print',
     desc: 'Invoices, briefs, contracts — A4 layout, inline styles, print-optimised.',
     color: 'border-rose-500/20 hover:border-rose-500/40',
@@ -56,9 +63,10 @@ export default function DemoSection() {
 
         <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
           {tools.map((tool) => (
-            <div
+            <Link
               key={tool.label}
-              className={`group rounded-2xl border bg-zinc-900/30 p-6 transition duration-200 ${tool.color}`}
+              href={`/app?tool=${tool.tool}`}
+              className={`group block rounded-2xl border bg-zinc-900/30 p-6 transition duration-200 hover:bg-zinc-900/50 ${tool.color}`}
             >
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
@@ -74,7 +82,10 @@ export default function DemoSection() {
               <p className="mt-4 text-sm leading-relaxed text-zinc-400">
                 {tool.desc}
               </p>
-            </div>
+              <p className="mt-3 text-xs font-medium text-emerald-500/80 group-hover:text-emerald-400">
+                Open in app →
+              </p>
+            </Link>
           ))}
         </div>
       </div>

@@ -7,12 +7,21 @@ export default function Footer() {
         <p className="text-sm text-zinc-500">
           © {new Date().getFullYear()} allig8or — AI Office Suite
         </p>
-        <div className="flex gap-6 text-sm text-zinc-500">
+        <div className="flex flex-wrap justify-center gap-6 text-sm text-zinc-500 sm:justify-end">
           <Link href="/app" className="hover:text-emerald-400">
             App
           </Link>
-          <Link href="#pricing" className="hover:text-emerald-400">
+          <Link href="/#pricing" className="hover:text-emerald-400">
             Pricing
+          </Link>
+          <Link href="/login" className="hover:text-emerald-400">
+            Sign in
+          </Link>
+          <Link href="/privacy" className="hover:text-emerald-400">
+            Privacy
+          </Link>
+          <Link href="/terms" className="hover:text-emerald-400">
+            Terms
           </Link>
         </div>
       </div>

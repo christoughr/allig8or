@@ -49,8 +49,21 @@ function PreviewBar({
 }) {
   const openInTab = () => {
     if (!html) return;
-    const blob = new Blob([html], { type: 'text/html' });
-    window.open(URL.createObjectURL(blob), '_blank');
+    const blob = new Blob([html], { type: 'text/html;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const w = window.open(url, '_blank', 'noopener,noreferrer');
+    if (w) setTimeout(() => URL.revokeObjectURL(url), 60_000);
+  };
+
+  const downloadHtml = () => {
+    if (!html) return;
+    const blob = new Blob([html], { type: 'text/html;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = fileName ?? 'index.html';
+    a.click();
+    URL.revokeObjectURL(url);
   };
 
   return (
@@ -76,6 +89,7 @@ function PreviewBar({
           <button
             type="button"
             onClick={() => setDevice('desktop')}
+            aria-pressed={device === 'desktop'}
             title="Desktop view"
             className={[
               'flex items-center gap-1 rounded px-2 py-1 text-xs transition',
@@ -90,6 +104,7 @@ function PreviewBar({
           <button
             type="button"
             onClick={() => setDevice('mobile')}
+            aria-pressed={device === 'mobile'}
             title="Mobile view"
             className={[
               'flex items-center gap-1 rounded px-2 py-1 text-xs transition',
@@ -103,25 +118,36 @@ function PreviewBar({
           </button>
         </div>
 
-        {/* Open in new tab */}
         {html && (
-          <button
-            type="button"
-            onClick={openInTab}
-            title="Open in new tab"
-            className="flex items-center gap-1 rounded-md border border-white/8 bg-zinc-900 px-2 py-1 text-xs text-zinc-400 transition hover:border-emerald-500/30 hover:text-emerald-400"
-          >
-            <ExternalLink size={11} strokeWidth={1.75} aria-hidden />
-            <span className="hidden sm:inline">Open</span>
-          </button>
+          <>
+            <button
+              type="button"
+              onClick={openInTab}
+              title="Open preview in a new browser tab"
+              aria-label="Open in new tab"
+              className="flex cursor-pointer items-center gap-1 rounded-md border border-white/8 bg-zinc-900 px-2 py-1 text-xs text-zinc-400 transition hover:border-emerald-500/30 hover:text-emerald-400"
+            >
+              <ExternalLink size={11} strokeWidth={1.75} aria-hidden />
+              <span className="hidden sm:inline">Open</span>
+            </button>
+            <button
+              type="button"
+              onClick={downloadHtml}
+              title="Download HTML file"
+              aria-label="Download HTML"
+              className="flex cursor-pointer items-center gap-1 rounded-md border border-white/8 bg-zinc-900 px-2 py-1 text-xs text-zinc-400 transition hover:border-emerald-500/30 hover:text-emerald-400"
+            >
+              <Download size={11} strokeWidth={1.75} aria-hidden />
+              <span className="hidden sm:inline">Download</span>
+            </button>
+          </>
         )}
 
-        {/* Download */}
-        {fileUrl && (
+        {!html && fileUrl && (
           <a
             href={fileUrl}
-            download={fileName ?? 'page.html'}
-            title="Download"
+            download={fileName ?? 'file'}
+            title="Download file"
             className="flex items-center gap-1 rounded-md border border-white/8 bg-zinc-900 px-2 py-1 text-xs text-zinc-400 transition hover:border-emerald-500/30 hover:text-emerald-400"
           >
             <Download size={11} strokeWidth={1.75} aria-hidden />
@@ -157,6 +183,7 @@ function MobileBezel({ children }: { children: React.ReactNode }) {
 export default function PreviewPanel({
   preview,
   activeTool,
+  onGenerateAnother,
 }: {
   preview: {
     type: 'html' | 'file';
@@ -165,6 +192,7 @@ export default function PreviewPanel({
     fileName?: string;
   } | null;
   activeTool: ToolType;
+  onGenerateAnother?: () => void;
 }) {
   const [device, setDevice] = useState<DeviceMode>('desktop');
   const meta = toolMeta[activeTool];
@@ -173,14 +201,13 @@ export default function PreviewPanel({
   // ── Empty state ────────────────────────────────────────────────────────────
   if (!preview) {
     return (
-      // Visible on desktop; on mobile it's hidden until after generation (handled by GeneratorLayout)
-      <div className="hidden flex-1 flex-col items-center justify-center bg-[#070b09] p-8 md:flex">
+      <div className="flex min-h-[120px] flex-1 flex-col items-center justify-center border-t border-white/8 bg-[#070b09] p-6 md:min-h-0 md:border-t-0">
         <div className="flex flex-col items-center gap-3 text-center">
           <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-emerald-500/10 ring-1 ring-emerald-500/20">
             <Icon size={28} strokeWidth={1.5} className="text-emerald-500/60" aria-hidden />
           </div>
           <p className="text-sm font-medium text-zinc-400">{meta.title}</p>
-          <p className="text-xs text-zinc-600">{meta.hint}</p>
+          <p className="max-w-[240px] text-xs text-zinc-600">{meta.hint}</p>
         </div>
       </div>
     );
@@ -189,7 +216,7 @@ export default function PreviewPanel({
   // ── HTML / website / pdf preview ──────────────────────────────────────────
   if (preview.type === 'html' && preview.content) {
     return (
-      <div className="flex flex-1 flex-col overflow-hidden bg-[#070b09]">
+      <div className="flex min-h-[280px] flex-1 flex-col overflow-hidden bg-[#070b09] md:min-h-0">
         <PreviewBar
           device={device}
           setDevice={setDevice}
@@ -265,7 +292,7 @@ export default function PreviewPanel({
             </a>
             <button
               type="button"
-              onClick={() => window.location.reload()}
+              onClick={() => onGenerateAnother?.()}
               className="flex w-full items-center justify-center gap-2 rounded-xl border border-white/10 px-6 py-2.5 text-sm text-zinc-400 transition hover:border-white/20 hover:text-white"
             >
               <RefreshCw size={13} strokeWidth={1.75} aria-hidden />

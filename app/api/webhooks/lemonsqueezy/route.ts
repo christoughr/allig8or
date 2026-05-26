@@ -61,14 +61,16 @@ async function syncSubscription(
     updated_at: new Date().toISOString(),
   };
 
+  const upsertOpts = { onConflict: 'user_id' };
+
   if (userId) {
-    await supabase.from('subscriptions').upsert({ user_id: userId, ...row });
+    await supabase.from('subscriptions').upsert({ user_id: userId, ...row }, upsertOpts);
     return;
   }
 
   const match = await findUserByEmail(supabase, email);
   if (match) {
-    await supabase.from('subscriptions').upsert({ user_id: match.id, ...row });
+    await supabase.from('subscriptions').upsert({ user_id: match.id, ...row }, upsertOpts);
   }
 }
 

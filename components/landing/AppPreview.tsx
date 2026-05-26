@@ -1,124 +1,194 @@
-// Static screenshot-style mock of /app — matches real app chrome exactly
-// (neutral browser bar, Lucide icons, no traffic lights)
+'use client';
+
+import { useState } from 'react';
+import Link from 'next/link';
+import { Monitor, Smartphone, ExternalLink, Globe } from 'lucide-react';
+import type { ToolType } from '@/types';
+
+const DEMO_HTML = `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/><title>Park & Associates</title><script src="https://cdn.tailwindcss.com"></script><link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet"/><style>body{font-family:'Source Sans 3',sans-serif}</style></head><body class="bg-white text-slate-800"><nav class="flex items-center justify-between bg-[#0a1628] px-6 py-4"><span class="font-[Cormorant_Garamond] text-lg font-semibold tracking-widest text-amber-400">PARK & ASSOCIATES</span><div class="flex gap-4 text-sm text-slate-400"><span>Practice</span><span>Team</span><span>Contact</span></div></nav><header class="bg-gradient-to-br from-[#0a1628] to-[#1a2f50] px-6 py-16 text-center"><p class="text-xs font-bold uppercase tracking-[0.2em] text-amber-400">Startup IP Law</p><h1 class="mt-3 text-3xl font-bold text-white">Protecting Your Most Valuable Assets</h1><a href="#" class="mt-6 inline-block rounded-full bg-amber-500 px-6 py-2.5 text-sm font-semibold text-[#0a1628]">Free Consult</a></header><section class="mx-auto max-w-2xl px-6 py-10 space-y-3"><div class="h-2 rounded bg-slate-200"></div><div class="h-2 w-4/5 rounded bg-slate-100"></div><div class="h-2 w-3/5 rounded bg-slate-100"></div></section></body></html>`;
+
+const tabs: { label: string; tool: ToolType }[] = [
+  { label: 'Website', tool: 'website' },
+  { label: 'Slides', tool: 'presentation' },
+  { label: 'Sheet', tool: 'spreadsheet' },
+  { label: 'Doc', tool: 'document' },
+  { label: 'PDF', tool: 'pdf' },
+];
 
 export default function AppPreview() {
+  const [device, setDevice] = useState<'desktop' | 'mobile'>('desktop');
+  const [activeTab, setActiveTab] = useState(0);
+
+  const openDemo = () => {
+    const blob = new Blob([DEMO_HTML], { type: 'text/html' });
+    const url = URL.createObjectURL(blob);
+    const w = window.open(url, '_blank');
+    if (w) setTimeout(() => URL.revokeObjectURL(url), 60_000);
+  };
+
+  const activeTool = tabs[activeTab].tool;
+
   return (
     <section className="px-6 pb-24">
       <div className="mx-auto max-w-5xl">
+        <p className="mb-4 text-center text-xs text-zinc-600">
+          Interactive preview — try Desktop / Mobile / Open, then{' '}
+          <Link href="/app" className="text-emerald-400 hover:underline">
+            open the real app
+          </Link>
+        </p>
         <div className="overflow-hidden rounded-2xl border border-white/10 shadow-2xl shadow-black/60 ring-1 ring-white/5">
-
-          {/* ── Neutral browser bar (mirrors real PreviewPanel bar) ── */}
           <div className="flex items-center gap-2 border-b border-white/8 bg-zinc-950/90 px-3 py-2.5">
-            {/* Fake URL pill */}
-            <div className="hidden sm:flex max-w-[220px] flex-1 items-center gap-1.5 rounded-md border border-white/8 bg-zinc-900 px-2.5 py-1">
-              {/* globe icon inline SVG at 11px */}
-              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="shrink-0 text-zinc-600" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
-              <span className="truncate text-[11px] text-zinc-500 select-none">preview.allig8or.local</span>
-            </div>
-            <span className="sm:hidden text-xs font-medium text-zinc-500">allig8or.com/app</span>
-
-            <div className="flex flex-1 items-center justify-end gap-1.5">
-              {/* Device toggle */}
-              <div className="flex items-center rounded-md border border-white/8 bg-zinc-900 p-0.5">
-                <span className="flex items-center gap-1 rounded bg-zinc-700 px-2 py-1 text-[10px] text-white">
-                  <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
-                  Desktop
-                </span>
-                <span className="px-2 py-1 text-[10px] text-zinc-500">Mobile</span>
-              </div>
-              {/* Open button */}
-              <span className="flex items-center gap-1 rounded-md border border-white/8 bg-zinc-900 px-2 py-1 text-[10px] text-zinc-500">
-                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-                Open
+            <div className="hidden max-w-[220px] flex-1 items-center gap-1.5 rounded-md border border-white/8 bg-zinc-900 px-2.5 py-1 sm:flex">
+              <Globe size={11} className="shrink-0 text-zinc-600" aria-hidden />
+              <span className="truncate text-[11px] text-zinc-500 select-none">
+                preview.allig8or.local
               </span>
+            </div>
+            <span className="text-xs text-zinc-500 sm:hidden">Preview</span>
+            <div className="flex flex-1 items-center justify-end gap-1.5">
+              <div className="flex rounded-md border border-white/8 bg-zinc-900 p-0.5">
+                <button
+                  type="button"
+                  onClick={() => setDevice('desktop')}
+                  className={`flex items-center gap-1 rounded px-2 py-1 text-[10px] transition ${
+                    device === 'desktop'
+                      ? 'bg-zinc-700 text-white'
+                      : 'text-zinc-500 hover:text-zinc-300'
+                  }`}
+                >
+                  <Monitor size={11} aria-hidden />
+                  Desktop
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setDevice('mobile')}
+                  className={`flex items-center gap-1 rounded px-2 py-1 text-[10px] transition ${
+                    device === 'mobile'
+                      ? 'bg-zinc-700 text-white'
+                      : 'text-zinc-500 hover:text-zinc-300'
+                  }`}
+                >
+                  <Smartphone size={11} aria-hidden />
+                  Mobile
+                </button>
+              </div>
+              <button
+                type="button"
+                onClick={openDemo}
+                className="flex items-center gap-1 rounded-md border border-white/8 bg-zinc-900 px-2 py-1 text-[10px] text-zinc-400 transition hover:border-emerald-500/30 hover:text-emerald-400"
+              >
+                <ExternalLink size={10} aria-hidden />
+                Open
+              </button>
             </div>
           </div>
 
-          {/* ── App shell ── */}
           <div className="grid md:grid-cols-[300px_1fr]">
-
-            {/* Left: chat + tool tabs */}
             <div className="border-b border-white/8 bg-zinc-950 p-4 md:border-b-0 md:border-r">
-              {/* Tool tabs — Lucide-style labels, no emoji */}
               <div className="mb-4 flex gap-1.5 overflow-x-auto">
-                {[
-                  { label: 'Website',  active: true  },
-                  { label: 'Slides',   active: false },
-                  { label: 'Sheet',    active: false },
-                  { label: 'Doc',      active: false },
-                ].map(({ label, active }) => (
-                  <span
-                    key={label}
-                    className={[
-                      'whitespace-nowrap rounded-full px-3 py-1 text-xs font-medium',
-                      active
+                {tabs.map(({ label, tool }, i) => (
+                  <Link
+                    key={tool}
+                    href={`/app?tool=${tool}`}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      setActiveTab(i);
+                    }}
+                    className={`whitespace-nowrap rounded-full px-3 py-1 text-xs font-medium transition ${
+                      activeTab === i
                         ? 'bg-emerald-500 text-[#070b09]'
-                        : 'bg-white/5 text-zinc-500',
-                    ].join(' ')}
+                        : 'bg-white/5 text-zinc-500 hover:bg-white/10 hover:text-zinc-300'
+                    }`}
                   >
                     {label}
-                  </span>
+                  </Link>
                 ))}
               </div>
-
-              {/* Messages */}
-              <div className="space-y-2.5">
-                <div className="ml-auto max-w-[85%] rounded-2xl rounded-br-md bg-emerald-600 px-3 py-2 text-xs text-white">
-                  Landing page for a boutique law firm specializing in startup IP
+              <div className="space-y-2.5 text-xs">
+                <div className="ml-auto max-w-[85%] rounded-2xl rounded-br-md bg-emerald-600 px-3 py-2 text-white">
+                  {activeTool === 'website'
+                    ? 'Landing page for a boutique law firm specializing in startup IP'
+                    : `Create a ${tabs[activeTab].label.toLowerCase()} for my business`}
                 </div>
-                <div className="max-w-[85%] rounded-2xl rounded-bl-md bg-zinc-800 px-3 py-2 text-xs text-zinc-300">
-                  Done — preview on the right. Want a different color scheme?
-                </div>
-                <div className="ml-auto max-w-[85%] rounded-2xl rounded-br-md bg-emerald-600 px-3 py-2 text-xs text-white">
-                  Make it navy and gold, more authoritative
-                </div>
-                <div className="flex gap-1 pl-1 pt-1">
-                  {[0, 150, 300].map((d) => (
-                    <span
-                      key={d}
-                      className="h-1.5 w-1.5 rounded-full bg-emerald-500/50 animate-bounce"
-                      style={{ animationDelay: `${d}ms` }}
-                    />
-                  ))}
+                <div className="max-w-[85%] rounded-2xl rounded-bl-md bg-zinc-800 px-3 py-2 text-zinc-300">
+                  Done — preview on the right. Open the app to generate for real.
                 </div>
               </div>
+              <Link
+                href={`/app?tool=${activeTool}`}
+                className="mt-4 block rounded-xl bg-emerald-500/15 py-2 text-center text-xs font-semibold text-emerald-400 ring-1 ring-emerald-500/25 hover:bg-emerald-500/25"
+              >
+                Try {tabs[activeTab].label} in app →
+              </Link>
             </div>
 
-            {/* Right: preview mock */}
-            <div className="min-h-[260px] bg-zinc-900/30">
-              <div className="flex h-full flex-col items-center justify-center p-6">
-                {/* Simulated website preview card — law firm style */}
-                <div className="w-full max-w-sm overflow-hidden rounded-xl border border-white/8 bg-white shadow-lg">
-                  {/* Nav */}
-                  <div className="flex items-center justify-between bg-[#0a1628] px-4 py-3">
-                    <span className="text-xs font-bold tracking-widest text-amber-400">PARK & ASSOCIATES</span>
-                    <div className="flex gap-3">
-                      {['Practice', 'Team', 'Contact'].map(l => (
-                        <span key={l} className="text-[10px] text-zinc-400">{l}</span>
-                      ))}
-                    </div>
-                  </div>
-                  {/* Hero area */}
-                  <div className="bg-gradient-to-br from-[#0a1628] to-[#1a2f50] px-5 py-8 text-center">
-                    <p className="text-xs font-bold uppercase tracking-[0.2em] text-amber-400">Startup IP Law</p>
-                    <p className="mt-2 text-sm font-bold text-white leading-tight">Protecting Your Most<br />Valuable Assets</p>
-                    <div className="mx-auto mt-4 w-24 rounded-full bg-amber-500 py-1.5">
-                      <span className="text-[10px] font-semibold text-[#0a1628]">Free Consult</span>
-                    </div>
-                  </div>
-                  {/* Content lines */}
-                  <div className="px-5 py-4 space-y-1.5">
-                    <div className="h-1.5 rounded-full bg-zinc-200" />
-                    <div className="h-1.5 w-4/5 rounded-full bg-zinc-100" />
-                    <div className="h-1.5 w-3/5 rounded-full bg-zinc-100" />
+            <div className="flex min-h-[280px] items-center justify-center bg-zinc-900/30 p-4">
+              {device === 'desktop' ? (
+                <div
+                  className="w-full overflow-hidden rounded-lg border border-white/8 bg-white shadow-lg"
+                  style={{ maxWidth: 480, aspectRatio: '16/10' }}
+                >
+                  <MockLawSite />
+                </div>
+              ) : (
+                <div
+                  className="overflow-hidden rounded-[2rem] border-2 border-zinc-700 bg-zinc-900 p-1 shadow-xl"
+                  style={{ width: 220, aspectRatio: '390/844' }}
+                >
+                  <div className="h-full overflow-hidden rounded-[1.75rem] bg-white">
+                    <MockLawSite compact />
                   </div>
                 </div>
-              </div>
+              )}
             </div>
-
           </div>
         </div>
       </div>
     </section>
+  );
+}
+
+function MockLawSite({ compact = false }: { compact?: boolean }) {
+  return (
+    <div className="flex h-full flex-col bg-white text-left">
+      <div className="flex items-center justify-between bg-[#0a1628] px-3 py-2">
+        <span
+          className={`font-bold tracking-widest text-amber-400 ${compact ? 'text-[8px]' : 'text-[10px]'}`}
+        >
+          PARK & ASSOCIATES
+        </span>
+        {!compact && (
+          <div className="flex gap-2 text-[8px] text-zinc-400">
+            {['Practice', 'Team', 'Contact'].map((l) => (
+              <span key={l}>{l}</span>
+            ))}
+          </div>
+        )}
+      </div>
+      <div
+        className={`flex flex-1 flex-col items-center justify-center bg-gradient-to-br from-[#0a1628] to-[#1a2f50] text-center ${compact ? 'px-2 py-4' : 'px-4 py-6'}`}
+      >
+        <p className={`font-bold uppercase tracking-widest text-amber-400 ${compact ? 'text-[7px]' : 'text-[9px]'}`}>
+          Startup IP Law
+        </p>
+        <p className={`mt-1 font-bold leading-tight text-white ${compact ? 'text-[10px]' : 'text-xs'}`}>
+          Protecting Your
+          <br />
+          Most Valuable Assets
+        </p>
+        <span
+          className={`mt-2 rounded-full bg-amber-500 font-semibold text-[#0a1628] ${compact ? 'px-2 py-0.5 text-[7px]' : 'px-3 py-1 text-[9px]'}`}
+        >
+          Free Consult
+        </span>
+      </div>
+      {!compact && (
+        <div className="space-y-1 px-3 py-2">
+          <div className="h-1 rounded-full bg-zinc-200" />
+          <div className="h-1 w-4/5 rounded-full bg-zinc-100" />
+        </div>
+      )}
+    </div>
   );
 }

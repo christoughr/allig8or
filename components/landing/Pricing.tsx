@@ -3,10 +3,10 @@ import { PLANS } from '@/lib/lemonsqueezy';
 
 const features: Record<string, string[]> = {
   free: [
-    '10 generations / hour',
+    '10 / hour (guest) or 10 / day (signed in)',
     'All 5 file types',
     'HTML + file downloads',
-    'No account required',
+    'Save projects when signed in',
   ],
   pro: [
     '200 generations / day',

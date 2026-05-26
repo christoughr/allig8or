@@ -1,6 +1,7 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useSearchParams } from 'next/navigation';
 import ChatPanel from './ChatPanel';
 import PreviewPanel from './PreviewPanel';
 import ToolSelector from './ToolSelector';
@@ -8,6 +9,13 @@ import type { ToolType } from '@/types';
 import { parseApiJson } from '@/lib/parseApiResponse';
 
 const GENERATE_TIMEOUT_MS = 120_000;
+const VALID_TOOLS: ToolType[] = [
+  'website',
+  'presentation',
+  'spreadsheet',
+  'document',
+  'pdf',
+];
 
 export type { ToolType };
 
@@ -18,8 +26,15 @@ type AppState =
   | { status: 'error'; message: string }
   | { status: 'rate_limited'; retryAfter: number };
 
-export default function GeneratorLayout() {
-  const [activeTool, setActiveTool] = useState<ToolType>('website');
+export default function GeneratorLayout({
+  initialTool,
+}: {
+  initialTool?: ToolType;
+}) {
+  const searchParams = useSearchParams();
+  const [activeTool, setActiveTool] = useState<ToolType>(
+    initialTool && VALID_TOOLS.includes(initialTool) ? initialTool : 'website'
+  );
   const [appState, setAppState] = useState<AppState>({ status: 'idle' });
   const [preview, setPreview] = useState<{
     type: 'html' | 'file';
@@ -30,6 +45,19 @@ export default function GeneratorLayout() {
   const [messages, setMessages] = useState<
     Array<{ role: 'user' | 'assistant'; content: string; fileUrl?: string }>
   >([]);
+
+  useEffect(() => {
+    const t = searchParams.get('tool') as ToolType | null;
+    if (t && VALID_TOOLS.includes(t)) {
+      setActiveTool(t);
+    }
+  }, [searchParams]);
+
+  const resetSession = () => {
+    setPreview(null);
+    setMessages([]);
+    setAppState({ status: 'idle' });
+  };
 
   const handleGenerate = async (prompt: string) => {
     setAppState({ status: 'generating' });
@@ -63,7 +91,7 @@ export default function GeneratorLayout() {
           ...prev,
           {
             role: 'assistant',
-            content: `Rate limit reached. Free plan allows 10 generations/hour. Try again in ${retryAfter}s, or upgrade to Pro for 200/day.`,
+            content: `Limit reached. Try again in ${retryAfter}s, sign in for daily limits, or upgrade to Pro (200/day).`,
           },
         ]);
         return;
@@ -77,11 +105,15 @@ export default function GeneratorLayout() {
         if (!result.html?.trim()) {
           throw new Error('No preview content returned. Please try again.');
         }
+        const html = result.html;
+        const fileUrl =
+          result.fileUrl ??
+          `data:text/html;charset=utf-8,${encodeURIComponent(html)}`;
         setPreview({
           type: 'html',
-          content: result.html,
-          fileUrl: result.fileUrl,
-          fileName: result.fileName,
+          content: html,
+          fileUrl,
+          fileName: result.fileName ?? (activeTool === 'pdf' ? 'document.html' : 'index.html'),
         });
         setMessages((prev) => [
           ...prev,
@@ -91,7 +123,7 @@ export default function GeneratorLayout() {
               activeTool === 'website'
                 ? 'Done — preview on the right. Tell me what to change.'
                 : 'PDF-ready HTML generated. Preview on the right or download.',
-            fileUrl: result.fileUrl,
+            fileUrl,
           },
         ]);
       } else {
@@ -123,8 +155,7 @@ export default function GeneratorLayout() {
             : 'Something went wrong.';
       setAppState({ status: 'error', message });
       setMessages((prev) => [
-        ...prev,
-        { role: 'assistant', content: `Error: ${message} Please try again.` },
+        ...prev, { role: 'assistant', content: `Error: ${message} Please try again.` },
       ]);
     } finally {
       clearTimeout(timeoutId);
@@ -139,13 +170,10 @@ export default function GeneratorLayout() {
         activeTool={activeTool}
         onSelect={(tool) => {
           setActiveTool(tool);
-          setPreview(null);
-          setMessages([]);
-          setAppState({ status: 'idle' });
+          resetSession();
         }}
       />
-      {/* Mobile: stack vertically; desktop: side by side */}
-      <div className="flex flex-1 flex-col overflow-hidden md:flex-row">
+      <div className="flex min-h-0 flex-1 flex-col overflow-hidden md:flex-row">
         <ChatPanel
           messages={messages}
           isGenerating={isGenerating}
@@ -153,7 +181,11 @@ export default function GeneratorLayout() {
           activeTool={activeTool}
           appState={appState}
         />
-        <PreviewPanel preview={preview} activeTool={activeTool} />
+        <PreviewPanel
+          preview={preview}
+          activeTool={activeTool}
+          onGenerateAnother={resetSession}
+        />
       </div>
     </div>
   );

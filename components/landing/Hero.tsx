@@ -42,10 +42,10 @@ export default function Hero() {
 
         {/* Headline */}
         <div className="mx-auto max-w-3xl text-center">
-          <h1 className="text-5xl font-extrabold leading-[1.05] tracking-tight text-white sm:text-7xl">
+          <h1 className="font-heading text-4xl font-semibold leading-[1.12] tracking-[-0.02em] text-white sm:text-6xl sm:leading-[1.08]">
             Describe it once.
             <br />
-            <span className="bg-gradient-to-r from-emerald-300 via-teal-200 to-emerald-400 bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-emerald-300/95 via-teal-200/90 to-emerald-400/95 bg-clip-text font-medium text-transparent">
               Get the file.
             </span>
           </h1>
@@ -76,15 +76,28 @@ export default function Hero() {
 
         {/* Output type pills */}
         <div className="mx-auto mt-12 flex flex-wrap items-center justify-center gap-2">
-          {outputs.map(({ label, sub }) => (
-            <div
-              key={label}
-              className="flex items-center gap-2 rounded-full border border-white/8 bg-zinc-900/60 px-4 py-2"
-            >
-              <span className="text-sm font-medium text-white">{label}</span>
-              <span className="text-xs text-zinc-500">{sub}</span>
-            </div>
-          ))}
+          {outputs.map(({ label, sub }) => {
+            const tool =
+              label === 'Website'
+                ? 'website'
+                : label === 'Presentation'
+                  ? 'presentation'
+                  : label === 'Spreadsheet'
+                    ? 'spreadsheet'
+                    : label === 'Document'
+                      ? 'document'
+                      : 'pdf';
+            return (
+              <Link
+                key={label}
+                href={`/app?tool=${tool}`}
+                className="flex items-center gap-2 rounded-full border border-white/8 bg-zinc-900/60 px-4 py-2 transition hover:border-emerald-500/30 hover:bg-emerald-500/5"
+              >
+                <span className="text-sm font-medium text-white">{label}</span>
+                <span className="text-xs text-zinc-500">{sub}</span>
+              </Link>
+            );
+          })}
         </div>
 
         {/* Divider */}

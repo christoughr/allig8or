@@ -1,9 +1,9 @@
--- ============================
--- allig8or.com — Supabase Schema
--- Run this in Supabase SQL Editor
--- ============================
+-- ═══════════════════════════════════════════════════════════════
+-- allig8or — Supabase SQL (copy entire file → SQL Editor → Run)
+-- Dashboard: https://supabase.com/dashboard → your project → SQL
+-- ═══════════════════════════════════════════════════════════════
 
--- Projects table
+-- Projects
 create table if not exists projects (
   id uuid default gen_random_uuid() primary key,
   user_id uuid references auth.users(id) on delete cascade not null,
@@ -17,26 +17,25 @@ create table if not exists projects (
   updated_at timestamp with time zone default now()
 );
 
--- RLS
 alter table projects enable row level security;
 
+drop policy if exists "Users can view own projects" on projects;
 create policy "Users can view own projects"
-  on projects for select
-  using (auth.uid() = user_id);
+  on projects for select using (auth.uid() = user_id);
 
+drop policy if exists "Users can insert own projects" on projects;
 create policy "Users can insert own projects"
-  on projects for insert
-  with check (auth.uid() = user_id);
+  on projects for insert with check (auth.uid() = user_id);
 
+drop policy if exists "Users can update own projects" on projects;
 create policy "Users can update own projects"
-  on projects for update
-  using (auth.uid() = user_id);
+  on projects for update using (auth.uid() = user_id);
 
+drop policy if exists "Users can delete own projects" on projects;
 create policy "Users can delete own projects"
-  on projects for delete
-  using (auth.uid() = user_id);
+  on projects for delete using (auth.uid() = user_id);
 
--- Usage tracking
+-- Usage
 create table if not exists usage (
   id uuid default gen_random_uuid() primary key,
   user_id uuid references auth.users(id) on delete cascade not null,
@@ -47,11 +46,9 @@ create table if not exists usage (
 
 alter table usage enable row level security;
 
+drop policy if exists "Users can view own usage" on usage;
 create policy "Users can view own usage"
-  on usage for select
-  using (auth.uid() = user_id);
-
--- Usage rows are inserted server-side with service role (bypasses RLS).
+  on usage for select using (auth.uid() = user_id);
 
 -- Subscriptions (Lemon Squeezy)
 create table if not exists subscriptions (
@@ -68,25 +65,27 @@ create table if not exists subscriptions (
 
 alter table subscriptions enable row level security;
 
+drop policy if exists "Users can view own subscription" on subscriptions;
 create policy "Users can view own subscription"
-  on subscriptions for select
-  using (auth.uid() = user_id);
+  on subscriptions for select using (auth.uid() = user_id);
 
--- Auto-create subscription on signup
+-- New user → free subscription
 create or replace function public.handle_new_user()
 returns trigger as $$
 begin
   insert into public.subscriptions (user_id, plan, status)
-  values (new.id, 'free', 'active');
+  values (new.id, 'free', 'active')
+  on conflict (user_id) do nothing;
   return new;
 end;
 $$ language plpgsql security definer;
 
+drop trigger if exists on_auth_user_created on auth.users;
 create trigger on_auth_user_created
   after insert on auth.users
   for each row execute procedure public.handle_new_user();
 
--- Updated_at trigger
+-- updated_at
 create or replace function update_updated_at_column()
 returns trigger as $$
 begin
@@ -95,10 +94,12 @@ begin
 end;
 $$ language plpgsql;
 
+drop trigger if exists update_projects_updated_at on projects;
 create trigger update_projects_updated_at
   before update on projects
   for each row execute procedure update_updated_at_column();
 
+drop trigger if exists update_subscriptions_updated_at on subscriptions;
 create trigger update_subscriptions_updated_at
   before update on subscriptions
   for each row execute procedure update_updated_at_column();

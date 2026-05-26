@@ -198,15 +198,26 @@ RULES:
 };
 
 // ─── Main generate function ───────────────────────────────────────────────────
+const REFINE_NOTE = `
+The user may be refining a previous version. Read the conversation history carefully.
+Apply ONLY the changes they request — keep what already works unless they ask to replace it.
+Match their tone, industry, colors, and structure from prior messages.
+`.trim();
+
 export async function generateWithClaude(
   prompt: string,
   type: GenerationType,
   conversationHistory: Array<{ role: 'user' | 'assistant'; content: string }> = []
 ) {
+  const system =
+    conversationHistory.length > 0
+      ? `${systemPrompts[type]}\n\n${REFINE_NOTE}`
+      : systemPrompts[type];
+
   const response = await anthropic.messages.create({
     model: 'claude-sonnet-4-5-20250929',
     max_tokens: 8000,
-    system: systemPrompts[type],
+    system,
     messages: [
       ...conversationHistory,
       { role: 'user', content: prompt },

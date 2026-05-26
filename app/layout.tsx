@@ -27,6 +27,10 @@ export const metadata: Metadata = {
   title: 'allig8or — AI Office Suite',
   description:
     'Create websites, presentations, spreadsheets, and documents with AI. Prompt in, file out.',
+  icons: {
+    icon: '/icon',
+    apple: '/apple-icon',
+  },
   openGraph: {
     title: 'allig8or — AI Office Suite',
     description: 'Prompt in, file out. AI replaces your entire office.',

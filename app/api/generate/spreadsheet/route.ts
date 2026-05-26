@@ -1,56 +1,20 @@
-import { NextRequest, NextResponse } from 'next/server';
-
-export const maxDuration = 60;
 import { generateWithClaude, parseJsonResponse } from '@/lib/claude';
+import { createGenerateRoute } from '@/lib/generateRoute';
 import {
   generateXLSX,
   type SpreadsheetData,
 } from '@/lib/generators/spreadsheet';
-import {
-  checkRateLimit,
-  getClientIp,
-  rateLimitExceededResponse,
-} from '@/lib/rateLimit';
 
-export async function POST(req: NextRequest) {
-  const ip = getClientIp(req);
-  const { allowed, remaining, resetAt } = checkRateLimit(ip);
+export const maxDuration = 60;
 
-  if (!allowed) {
-    const { status, headers } = rateLimitExceededResponse(resetAt);
-    return NextResponse.json(
-      { error: 'Rate limit exceeded. Try again later.' },
-      { status, headers }
-    );
-  }
-
-  try {
-    const { prompt, history } = await req.json();
-
-    if (!prompt || typeof prompt !== 'string') {
-      return NextResponse.json({ error: 'Prompt is required' }, { status: 400 });
-    }
-
-    const jsonStr = await generateWithClaude(
-      prompt,
-      'spreadsheet',
-      history ?? []
-    );
-    const data = parseJsonResponse<SpreadsheetData>(jsonStr);
-    const buffer = await generateXLSX(data);
-
-    const base64 = buffer.toString('base64');
-    const dataUrl = `data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,${base64}`;
-
-    return NextResponse.json(
-      {
-        fileUrl: dataUrl,
-        fileName: `${data.title || 'spreadsheet'}.xlsx`,
-      },
-      { headers: { 'X-RateLimit-Remaining': String(remaining) } }
-    );
-  } catch (error) {
-    console.error('Spreadsheet generation failed:', error);
-    return NextResponse.json({ error: 'Generation failed' }, { status: 500 });
-  }
-}
+export const POST = createGenerateRoute('spreadsheet', async ({ prompt, history }) => {
+  const jsonStr = await generateWithClaude(prompt, 'spreadsheet', history);
+  const data = parseJsonResponse<SpreadsheetData>(jsonStr);
+  const buffer = await generateXLSX(data);
+  const base64 = buffer.toString('base64');
+  const dataUrl = `data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,${base64}`;
+  return {
+    fileUrl: dataUrl,
+    fileName: `${data.title || 'spreadsheet'}.xlsx`,
+  };
+});
