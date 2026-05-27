@@ -9,7 +9,8 @@ Prompt in → **Website, PPTX, XLSX, DOCX, PDF** out.
 | File | 내용 |
 |------|------|
 | [docs/새-글-추가하기.md](docs/새-글-추가하기.md) | 블로그 글 추가 → commit → 배포 |
-| [docs/진행-상황-체크리스트.md](docs/진행-상황-체크리스트.md) | 완료 / 미완료 (사무실 PC 할 일 포함) |
+| [docs/진행-상황-체크리스트.md](docs/진행-상황-체크리스트.md) | 완료 / 미완료 |
+| [docs/사이트맵-다시-제출.md](docs/사이트맵-다시-제출.md) | GSC·Bing 사이트맵 재제출 |
 | [내가_할_일.md](내가_할_일.md) | Supabase, Vercel, GSC 단계별 |
 | [BING_WEBMASTER.md](BING_WEBMASTER.md) | Bing 연결 (GSC 가져오기) |
 
