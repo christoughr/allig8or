@@ -1,6 +1,17 @@
-# allig8or — AI Office Suite
+# allig8tor — AI Office Suite
+
+**Live:** https://www.allig8tor.com
 
 Prompt in → **Website, PPTX, XLSX, DOCX, PDF** out.
+
+## Docs
+
+| File | 내용 |
+|------|------|
+| [docs/새-글-추가하기.md](docs/새-글-추가하기.md) | 블로그 글 추가 → commit → 배포 |
+| [docs/진행-상황-체크리스트.md](docs/진행-상황-체크리스트.md) | 완료 / 미완료 (사무실 PC 할 일 포함) |
+| [내가_할_일.md](내가_할_일.md) | Supabase, Vercel, GSC 단계별 |
+| [BING_WEBMASTER.md](BING_WEBMASTER.md) | Bing 연결 (GSC 가져오기) |
 
 - **Landing:** `/`
 - **Generator app:** `/app`
