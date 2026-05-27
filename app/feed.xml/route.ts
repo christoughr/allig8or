@@ -1,7 +1,9 @@
-import { SITE_DESCRIPTION, SITE_NAME, SITE_TITLE, SITE_URL } from '@/lib/site';
+import { SITE_DESCRIPTION, SITE_NAME, SITE_TITLE } from '@/lib/site';
 import { absoluteUrl } from '@/lib/seo';
+import { getAllPosts } from '@/lib/blog';
+import { USE_CASES } from '@/lib/use-cases';
 
-/** RSS 2.0 feed for product pages (submit to Google Search Console). */
+/** RSS 2.0 feed — blog posts + key pages. */
 export async function GET() {
   const items = [
     {
@@ -10,24 +12,23 @@ export async function GET() {
       description: SITE_DESCRIPTION,
       pubDate: new Date('2026-05-27T00:00:00Z'),
     },
-    {
-      title: 'Try the AI generator — websites, decks, sheets, docs',
-      link: absoluteUrl('/app'),
-      description:
-        'Open the allig8tor workspace and generate office files from a single prompt.',
+    ...getAllPosts().map((post) => ({
+      title: post.title,
+      link: absoluteUrl(`/blog/${post.slug}`),
+      description: post.description,
+      pubDate: new Date(post.date),
+    })),
+    ...USE_CASES.map((uc) => ({
+      title: uc.title,
+      link: absoluteUrl(`/use-cases/${uc.slug}`),
+      description: uc.description,
       pubDate: new Date('2026-05-27T00:00:00Z'),
-    },
+    })),
     {
-      title: 'Privacy Policy',
-      link: absoluteUrl('/privacy'),
-      description: 'How allig8tor handles your data.',
-      pubDate: new Date('2026-05-26T00:00:00Z'),
-    },
-    {
-      title: 'Terms of Service',
-      link: absoluteUrl('/terms'),
-      description: 'Terms for using allig8tor.',
-      pubDate: new Date('2026-05-26T00:00:00Z'),
+      title: 'Try the AI generator',
+      link: absoluteUrl('/app'),
+      description: 'Open the allig8tor workspace.',
+      pubDate: new Date('2026-05-27T00:00:00Z'),
     },
   ];
 
@@ -35,7 +36,7 @@ export async function GET() {
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>${escapeXml(SITE_TITLE)}</title>
-    <link>${escapeXml(SITE_URL)}</link>
+    <link>${escapeXml(absoluteUrl('/'))}</link>
     <description>${escapeXml(SITE_DESCRIPTION)}</description>
     <language>en-us</language>
     <lastBuildDate>${new Date().toUTCString()}</lastBuildDate>

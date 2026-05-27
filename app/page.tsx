@@ -4,6 +4,7 @@ import AppPreview from '@/components/landing/AppPreview';
 import DemoSection from '@/components/landing/DemoSection';
 import Pricing from '@/components/landing/Pricing';
 import Faq from '@/components/landing/Faq';
+import Resources from '@/components/landing/Resources';
 import Footer from '@/components/landing/Footer';
 import { buildPageMetadata } from '@/lib/seo';
 import { SITE_DESCRIPTION, SITE_KEYWORDS } from '@/lib/site';
@@ -28,6 +29,7 @@ export default function LandingPage() {
         <AppPreview />
         <DemoSection />
         <Pricing />
+        <Resources />
         <Faq />
       </main>
       <Footer />

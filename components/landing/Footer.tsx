@@ -11,6 +11,12 @@ export default function Footer() {
           <Link href="/app" className="hover:text-emerald-400">
             App
           </Link>
+          <Link href="/blog" className="hover:text-emerald-400">
+            Blog
+          </Link>
+          <Link href="/use-cases" className="hover:text-emerald-400">
+            Use cases
+          </Link>
           <Link href="/#pricing" className="hover:text-emerald-400">
             Pricing
           </Link>
