@@ -41,6 +41,12 @@ const nextConfig: NextConfig = {
         destination,
         permanent: true,
       },
+      {
+        source: '/:path*',
+        has: [{ type: 'host', value: 'allig8tor.com' }],
+        destination,
+        permanent: true,
+      },
     ];
   },
 };

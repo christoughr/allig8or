@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { LogIn, LogOut, Sparkles } from 'lucide-react';
+import { FolderOpen, LogIn, LogOut, Sparkles } from 'lucide-react';
 import { createClient, isSupabaseConfigured } from '@/lib/supabase/client';
 import type { PlanId } from '@/lib/lemonsqueezy';
 
@@ -83,6 +83,13 @@ export default function UserMenu() {
           Pro
         </a>
       )}
+      <Link
+        href="/projects"
+        className="hidden items-center gap-1 rounded-lg border border-white/10 px-2 py-1 text-[11px] text-zinc-400 transition hover:text-white lg:flex"
+      >
+        <FolderOpen size={12} aria-hidden />
+        Projects
+      </Link>
       <span className="max-w-[120px] truncate text-xs text-zinc-400" title={me.user.email}>
         {me.user.email?.split('@')[0]}
       </span>

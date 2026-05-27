@@ -8,6 +8,7 @@ import {
   rateLimitExceededResponse,
 } from '@/lib/rateLimit';
 import type { GenerationType } from '@/lib/claude';
+import { countProjectsForUser } from '@/lib/projects';
 
 const DAY_MS = 24 * 60 * 60 * 1000;
 
@@ -149,22 +150,43 @@ export async function saveProject(params: {
   fileUrl?: string;
   htmlContent?: string;
   messages?: Array<{ role: string; content: string }>;
-}): Promise<void> {
+}): Promise<string | null> {
   const admin = getAdminClient();
-  if (!admin) return;
+  if (!admin) return null;
+
+  const plan = await resolveUserPlan(params.userId);
+  const projectLimit = PLANS[plan].limits.projects;
+  if (projectLimit >= 0) {
+    const count = await countProjectsForUser(params.userId);
+    if (count >= projectLimit) {
+      console.warn('[projects] limit reached for user', params.userId);
+      return null;
+    }
+  }
 
   const title =
     params.title?.slice(0, 120) ||
     params.prompt.slice(0, 80) ||
     'Untitled';
 
-  await admin.from('projects').insert({
-    user_id: params.userId,
-    type: params.type,
-    title,
-    prompt: params.prompt,
-    file_url: params.fileUrl ?? null,
-    html_content: params.htmlContent ?? null,
-    messages: params.messages ?? [],
-  });
+  const { data, error } = await admin
+    .from('projects')
+    .insert({
+      user_id: params.userId,
+      type: params.type,
+      title,
+      prompt: params.prompt,
+      file_url: params.fileUrl ?? null,
+      html_content: params.htmlContent ?? null,
+      messages: params.messages ?? [],
+    })
+    .select('id')
+    .single();
+
+  if (error) {
+    console.error('[projects] save failed:', error.message);
+    return null;
+  }
+
+  return data?.id ? String(data.id) : null;
 }

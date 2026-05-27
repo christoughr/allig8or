@@ -1,7 +1,8 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
-import { ArrowUp, Download } from 'lucide-react';
+import { ArrowUp, Download, Lightbulb } from 'lucide-react';
+import GenerationProgress from './GenerationProgress';
 import {
   Globe,
   Presentation,
@@ -71,7 +72,7 @@ type AppState =
   | { status: 'idle' }
   | { status: 'generating' }
   | { status: 'done' }
-  | { status: 'error'; message: string }
+  | { status: 'error'; message: string; hint?: string }
   | { status: 'rate_limited'; retryAfter: number };
 
 export default function ChatPanel({
@@ -80,12 +81,16 @@ export default function ChatPanel({
   onSubmit,
   activeTool,
   appState,
+  followUpSuggestions = [],
+  onPickSuggestion,
 }: {
   messages: Array<{ role: 'user' | 'assistant'; content: string; fileUrl?: string }>;
   isGenerating: boolean;
   onSubmit: (prompt: string) => void;
   activeTool: ToolType;
   appState: AppState;
+  followUpSuggestions?: string[];
+  onPickSuggestion?: (text: string) => void;
 }) {
   const [input, setInput] = useState('');
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -172,17 +177,27 @@ export default function ChatPanel({
 
         {isGenerating && (
           <div className="flex justify-start">
-            <div className="rounded-2xl rounded-bl-md bg-zinc-800/80 px-4 py-3">
-              <div className="flex gap-1.5">
-                {[0, 150, 300].map((delay) => (
-                  <span
-                    key={delay}
-                    className="h-1.5 w-1.5 animate-bounce rounded-full bg-emerald-500/60"
-                    style={{ animationDelay: `${delay}ms` }}
-                  />
-                ))}
-              </div>
-              <p className="mt-2 text-xs text-zinc-600">Usually 10–40 seconds…</p>
+            <GenerationProgress activeTool={activeTool} />
+          </div>
+        )}
+
+        {followUpSuggestions.length > 0 && !isGenerating && (
+          <div className="rounded-xl border border-emerald-500/15 bg-emerald-500/[0.06] p-3">
+            <p className="flex items-center gap-1.5 text-xs font-medium text-emerald-400">
+              <Lightbulb size={12} aria-hidden />
+              Try next for a stronger deliverable
+            </p>
+            <div className="mt-2 flex flex-col gap-1.5">
+              {followUpSuggestions.map((s) => (
+                <button
+                  key={s}
+                  type="button"
+                  onClick={() => onPickSuggestion?.(s)}
+                  className="rounded-lg border border-white/8 bg-white/[0.03] px-3 py-2 text-left text-xs text-zinc-300 transition hover:border-emerald-500/30 hover:bg-emerald-500/5"
+                >
+                  {s}
+                </button>
+              ))}
             </div>
           </div>
         )}
@@ -206,7 +221,10 @@ export default function ChatPanel({
 
         {appState.status === 'error' && (
           <div className="rounded-xl border border-red-500/20 bg-red-500/[0.08] px-4 py-3 text-sm text-red-300">
-            {appState.message}
+            <p>{appState.message}</p>
+            {appState.hint && (
+              <p className="mt-2 text-xs text-red-200/80">{appState.hint}</p>
+            )}
           </div>
         )}
 

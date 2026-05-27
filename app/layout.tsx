@@ -29,10 +29,11 @@ export const metadata: Metadata = {
   ...rootMetadata,
   icons: {
     icon: [
-      { url: '/favicon.svg', type: 'image/svg+xml' },
-      { url: '/icon', type: 'image/png', sizes: '32x32' },
+      // Cache-bust to ensure browsers stop using a previously cached old favicon
+      { url: '/favicon.svg?v=2', type: 'image/svg+xml' },
+      { url: '/icon?v=2', type: 'image/png', sizes: '32x32' },
     ],
-    shortcut: '/icon',
+    shortcut: '/icon?v=2',
     apple: '/apple-icon',
   },
   alternates: {

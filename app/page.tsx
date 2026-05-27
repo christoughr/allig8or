@@ -2,6 +2,7 @@ import Header from '@/components/landing/Header';
 import Hero from '@/components/landing/Hero';
 import AppPreview from '@/components/landing/AppPreview';
 import DemoSection from '@/components/landing/DemoSection';
+import SampleGallery from '@/components/landing/SampleGallery';
 import Pricing from '@/components/landing/Pricing';
 import Faq from '@/components/landing/Faq';
 import Resources from '@/components/landing/Resources';
@@ -27,6 +28,7 @@ export default function LandingPage() {
       <main>
         <Hero />
         <AppPreview />
+        <SampleGallery />
         <DemoSection />
         <Pricing />
         <Resources />

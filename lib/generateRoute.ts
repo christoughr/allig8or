@@ -6,6 +6,7 @@ import {
   logGeneration,
   saveProject,
 } from '@/lib/generationLimits';
+import { persistGenerationOutput } from '@/lib/persistOutput';
 
 type GenerateHandler = (body: {
   prompt: string;
@@ -16,6 +17,19 @@ type GenerateHandler = (body: {
   fileName?: string;
 }>;
 
+function friendlyError(error: unknown): string {
+  if (error instanceof Error) {
+    if (error.message.includes('JSON')) {
+      return 'AI returned invalid structure. Try a shorter prompt or add more detail about sections/slides.';
+    }
+    if (error.message.includes('timeout') || error.message.includes('aborted')) {
+      return 'Generation timed out. Try fewer slides/rows or a simpler layout.';
+    }
+    return error.message;
+  }
+  return 'Generation failed. Please try again.';
+}
+
 export function createGenerateRoute(type: GenerationType, handler: GenerateHandler) {
   return async function POST(req: NextRequest) {
     const limit = await checkGenerationLimit(req);
@@ -23,7 +37,7 @@ export function createGenerateRoute(type: GenerationType, handler: GenerateHandl
     if (!limit.allowed) {
       const { status, headers } = limitExceededResponse(limit.resetAt);
       return NextResponse.json(
-        { error: limit.message },
+        { error: limit.message, retryAfter: Math.ceil((limit.resetAt - Date.now()) / 1000) },
         { status, headers }
       );
     }
@@ -37,12 +51,18 @@ export function createGenerateRoute(type: GenerationType, handler: GenerateHandl
         return NextResponse.json({ error: 'Prompt is required' }, { status: 400 });
       }
 
-      const result = await handler({ prompt, history });
+      let result = await handler({ prompt, history });
+      result = await persistGenerationOutput({
+        userId: limit.userId,
+        type,
+        result,
+      });
 
       await logGeneration(limit.userId, type);
 
+      let projectId: string | null = null;
       if (limit.userId) {
-        await saveProject({
+        projectId = await saveProject({
           userId: limit.userId,
           type,
           prompt,
@@ -63,15 +83,29 @@ export function createGenerateRoute(type: GenerationType, handler: GenerateHandl
         });
       }
 
-      return NextResponse.json(result, {
-        headers: {
-          'X-RateLimit-Remaining': String(limit.remaining),
-          'X-RateLimit-Plan': limit.plan,
-        },
-      });
+      return NextResponse.json(
+        { ...result, projectId },
+        {
+          headers: {
+            'X-RateLimit-Remaining': String(limit.remaining),
+            'X-RateLimit-Plan': limit.plan,
+          },
+        }
+      );
     } catch (error) {
       console.error(`${type} generation failed:`, error);
-      return NextResponse.json({ error: 'Generation failed' }, { status: 500 });
+      return NextResponse.json(
+        {
+          error: friendlyError(error),
+          hint:
+            type === 'presentation'
+              ? 'Tip: specify slide count and key sections (problem, solution, traction).'
+              : type === 'spreadsheet'
+                ? 'Tip: name sheets and columns you need (e.g. Revenue, Expenses, Summary).'
+                : 'Tip: add audience, tone, and length (e.g. 5 sections, formal tone).',
+        },
+        { status: 500 }
+      );
     }
   };
 }

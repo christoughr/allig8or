@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "smoke": "node scripts/smoke-generate.mjs",
+    "smoke:full": "SMOKE_FULL=1 node scripts/smoke-generate.mjs"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.98.0",

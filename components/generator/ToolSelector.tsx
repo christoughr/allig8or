@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import { FolderOpen } from 'lucide-react';
 import type { ToolType } from '@/types';
 import UserMenu from '@/components/auth/UserMenu';
 import Logo from '@/components/brand/Logo';
@@ -58,6 +59,14 @@ export default function ToolSelector({
         })}
       </div>
 
+      <Link
+        href="/projects"
+        className="hidden items-center gap-1 rounded-lg border border-white/10 px-2.5 py-1.5 text-[11px] font-medium text-zinc-400 transition hover:border-emerald-500/30 hover:text-white sm:flex"
+        title="Saved projects"
+      >
+        <FolderOpen size={13} aria-hidden />
+        Projects
+      </Link>
       <UserMenu />
     </div>
   );

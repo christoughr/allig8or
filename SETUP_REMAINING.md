@@ -36,6 +36,22 @@ SUPABASE_SERVICE_ROLE_KEY=
 
 ---
 
+## 1b. Supabase Storage (권장 — 큰 PPTX/XLSX용)
+
+SQL Editor에서 `supabase_storage.sql` 실행.
+
+Vercel env 추가:
+
+```
+SUPABASE_STORAGE_BUCKET=generated-files
+```
+
+(끄려면 `SUPABASE_STORAGE_BUCKET=disabled` — data URL 폴백)
+
+로그인 사용자 생성물은 Storage + signed URL로 저장됩니다.
+
+---
+
 ## ⭐ 2. Lemon Squeezy — **나중에 (지금 스킵)**
 
 스토어 승인 후 진행. Windows에서 할 때 이 섹션만 열면 됨.
@@ -76,7 +92,9 @@ npm run dev
 
 - [ ] `/` — Hero 글자 덜 굵음, output pill 클릭 → `/app?tool=`
 - [ ] `/` — AppPreview Desktop/Mobile/Open 클릭 동작
-- [ ] `/app` — 5 tool 탭 전환, 생성, Open 새 탭
+- [ ] `/app` — 5 tool 탭 전환, 생성, Open + Download (파일도 Open)
+- [ ] `/projects` — 로그인 후 최근 프로젝트, Open → `/app?project=`
+- [ ] `npm run smoke` — 배포 전 API 스모크 (로컬 또는 `BASE_URL=`)
 - [ ] `/login` — 가입/로그인
 - [ ] `/privacy` `/terms`
 - [ ] Favicon 탭에 emerald **a8** 보임

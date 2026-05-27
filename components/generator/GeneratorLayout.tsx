@@ -1,12 +1,14 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import ChatPanel from './ChatPanel';
 import PreviewPanel from './PreviewPanel';
 import ToolSelector from './ToolSelector';
 import type { ToolType } from '@/types';
 import { parseApiJson } from '@/lib/parseApiResponse';
+import { followUpSuggestions } from '@/lib/followUpSuggestions';
+import { sanitizePreviewHtml } from '@/lib/sanitizePreviewHtml';
 
 const GENERATE_TIMEOUT_MS = 120_000;
 const VALID_TOOLS: ToolType[] = [
@@ -23,7 +25,7 @@ type AppState =
   | { status: 'idle' }
   | { status: 'generating' }
   | { status: 'done' }
-  | { status: 'error'; message: string }
+  | { status: 'error'; message: string; hint?: string }
   | { status: 'rate_limited'; retryAfter: number };
 
 export default function GeneratorLayout({
@@ -45,6 +47,7 @@ export default function GeneratorLayout({
   const [messages, setMessages] = useState<
     Array<{ role: 'user' | 'assistant'; content: string; fileUrl?: string }>
   >([]);
+  const [suggestions, setSuggestions] = useState<string[]>([]);
 
   useEffect(() => {
     const t = searchParams.get('tool') as ToolType | null;
@@ -53,14 +56,81 @@ export default function GeneratorLayout({
     }
   }, [searchParams]);
 
+  const applyProject = useCallback(
+    (project: {
+      type: ToolType;
+      prompt: string;
+      file_url?: string;
+      html_content?: string;
+      messages: Array<{ role: string; content: string; fileUrl?: string }>;
+      id: string;
+    }) => {
+      setActiveTool(project.type);
+      setSuggestions([]);
+      const msgs = (project.messages ?? []).map((m) => ({
+        role: m.role as 'user' | 'assistant',
+        content: m.content,
+        fileUrl: m.fileUrl,
+      }));
+      setMessages(
+        msgs.length
+          ? msgs
+          : [{ role: 'user' as const, content: project.prompt }]
+      );
+
+      if (
+        (project.type === 'website' || project.type === 'pdf') &&
+        project.html_content
+      ) {
+        const html = sanitizePreviewHtml(project.html_content);
+        const fileUrl =
+          project.file_url ??
+          `data:text/html;charset=utf-8,${encodeURIComponent(html)}`;
+        setPreview({
+          type: 'html',
+          content: html,
+          fileUrl,
+          fileName: project.type === 'pdf' ? 'document.html' : 'index.html',
+        });
+      } else if (project.file_url) {
+        setPreview({
+          type: 'file',
+          fileUrl: project.file_url,
+          fileName: undefined,
+        });
+      }
+      setAppState({ status: 'done' });
+    },
+    []
+  );
+
+  useEffect(() => {
+    const id = searchParams.get('project');
+    if (!id) return;
+
+    fetch(`/api/projects/${id}`)
+      .then((r) => r.json())
+      .then((data) => {
+        if (data.project) applyProject(data.project);
+      })
+      .catch(() => {
+        setAppState({
+          status: 'error',
+          message: 'Could not load project. Sign in or try again.',
+        });
+      });
+  }, [searchParams, applyProject]);
+
   const resetSession = () => {
     setPreview(null);
     setMessages([]);
+    setSuggestions([]);
     setAppState({ status: 'idle' });
   };
 
   const handleGenerate = async (prompt: string) => {
     setAppState({ status: 'generating' });
+    setSuggestions([]);
     setMessages((prev) => [...prev, { role: 'user', content: prompt }]);
 
     const controller = new AbortController();
@@ -81,7 +151,9 @@ export default function GeneratorLayout({
         html?: string;
         fileUrl?: string;
         fileName?: string;
+        projectId?: string;
         error?: string;
+        hint?: string;
       }>(response);
 
       if (response.status === 429) {
@@ -98,14 +170,26 @@ export default function GeneratorLayout({
       }
 
       if (!response.ok) {
-        throw new Error(result.error || 'Generation failed');
+        setAppState({
+          status: 'error',
+          message: result.error || 'Generation failed',
+          hint: result.hint,
+        });
+        setMessages((prev) => [
+          ...prev,
+          {
+            role: 'assistant',
+            content: `${result.error ?? 'Generation failed'}${result.hint ? ` — ${result.hint}` : ''}`,
+          },
+        ]);
+        return;
       }
 
       if (activeTool === 'website' || activeTool === 'pdf') {
         if (!result.html?.trim()) {
           throw new Error('No preview content returned. Please try again.');
         }
-        const html = result.html;
+        const html = sanitizePreviewHtml(result.html);
         const fileUrl =
           result.fileUrl ??
           `data:text/html;charset=utf-8,${encodeURIComponent(html)}`;
@@ -122,7 +206,7 @@ export default function GeneratorLayout({
             content:
               activeTool === 'website'
                 ? 'Done — preview on the right. Tell me what to change.'
-                : 'PDF-ready HTML generated. Preview on the right or download.',
+                : 'PDF-ready HTML generated. Preview on the right or open/download.',
             fileUrl,
           },
         ]);
@@ -139,12 +223,13 @@ export default function GeneratorLayout({
           ...prev,
           {
             role: 'assistant',
-            content: `Your ${activeTool} is ready.`,
+            content: `Your ${activeTool} is ready. Open in browser or download.`,
             fileUrl: result.fileUrl,
           },
         ]);
       }
 
+      setSuggestions(followUpSuggestions(activeTool));
       setAppState({ status: 'done' });
     } catch (err) {
       const message =
@@ -153,9 +238,14 @@ export default function GeneratorLayout({
           : err instanceof Error
             ? err.message
             : 'Something went wrong.';
-      setAppState({ status: 'error', message });
+      setAppState({
+        status: 'error',
+        message,
+        hint: 'Try fewer slides/rows or name the sections you need.',
+      });
       setMessages((prev) => [
-        ...prev, { role: 'assistant', content: `Error: ${message} Please try again.` },
+        ...prev,
+        { role: 'assistant', content: `Error: ${message} Please try again.` },
       ]);
     } finally {
       clearTimeout(timeoutId);
@@ -180,6 +270,8 @@ export default function GeneratorLayout({
           onSubmit={handleGenerate}
           activeTool={activeTool}
           appState={appState}
+          followUpSuggestions={suggestions}
+          onPickSuggestion={(s) => handleGenerate(s)}
         />
         <PreviewPanel
           preview={preview}
