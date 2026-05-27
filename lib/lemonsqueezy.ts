@@ -4,7 +4,7 @@
  * Dashboard setup:
  * 1. Create store + products (Pro $29, Team $79)
  * 2. Copy variant IDs into env
- * 3. Webhook → https://allig8or.com/api/webhooks/lemonsqueezy
+ * 3. Webhook → https://allig8tor.com/api/webhooks/lemonsqueezy
  */
 
 export const PLANS = {

@@ -34,7 +34,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'allig8or — AI Office Suite',
     description: 'Prompt in, file out. AI replaces your entire office.',
-    url: 'https://allig8or.com',
+    url: 'https://allig8tor.com',
     siteName: 'allig8or',
     type: 'website',
   },

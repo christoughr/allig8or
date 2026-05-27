@@ -8,7 +8,7 @@ export default function PrivacyPage() {
   return (
     <LegalLayout title="Privacy Policy" updated="May 26, 2026">
       <p>
-        allig8or (&quot;we&quot;, &quot;us&quot;) operates allig8or.com. This policy explains what we
+        allig8or (&quot;we&quot;, &quot;us&quot;) operates allig8tor.com. This policy explains what we
         collect and how we use it when you use our AI Office Suite.
       </p>
       <h2>What we collect</h2>
@@ -37,7 +37,7 @@ export default function PrivacyPage() {
       </p>
       <h2>Contact</h2>
       <p>
-        Questions: <a href="mailto:hello@allig8or.com">hello@allig8or.com</a>
+        Questions: <a href="mailto:hello@allig8tor.com">hello@allig8tor.com</a>
       </p>
     </LegalLayout>
   );
@@ -56,7 +56,7 @@ function LegalLayout({
     <div className="min-h-[100dvh] bg-[#070b09] px-6 py-16 text-zinc-300">
       <article className="prose prose-invert prose-emerald mx-auto max-w-2xl prose-headings:font-heading prose-a:text-emerald-400">
         <Link href="/" className="mb-8 inline-block text-sm text-zinc-500 hover:text-emerald-400">
-          ← allig8or.com
+          ← allig8tor.com
         </Link>
         <h1 className="text-white">{title}</h1>
         <p className="text-sm text-zinc-500">Last updated: {updated}</p>

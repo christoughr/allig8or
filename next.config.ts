@@ -20,6 +20,23 @@ const nextConfig: NextConfig = {
       },
     ];
   },
+  async redirects() {
+    const destination = 'https://allig8tor.com/:path*';
+    return [
+      {
+        source: '/:path*',
+        has: [{ type: 'host', value: 'allig8or.com' }],
+        destination,
+        permanent: true,
+      },
+      {
+        source: '/:path*',
+        has: [{ type: 'host', value: 'www.allig8or.com' }],
+        destination,
+        permanent: true,
+      },
+    ];
+  },
 };
 
 export default nextConfig;
