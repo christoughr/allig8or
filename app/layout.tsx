@@ -34,7 +34,7 @@ export const metadata: Metadata = {
   alternates: {
     ...rootMetadata.alternates,
     types: {
-      'application/rss+xml': [{ url: '/feed.xml', title: 'allig8or updates' }],
+      'application/rss+xml': [{ url: '/feed.xml', title: 'allig8tor updates' }],
     },
   },
 };

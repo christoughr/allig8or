@@ -9,17 +9,17 @@ import { absoluteUrl } from '@/lib/seo';
 
 const faqItems = [
   {
-    question: 'What is allig8or?',
+    question: 'What is allig8tor?',
     answer:
-      'allig8or is an AI office suite. You describe what you need in plain language and get a website, presentation, spreadsheet, Word document, or PDF — ready to preview or download.',
+      'allig8tor is an AI office suite. You describe what you need in plain language and get a website, presentation, spreadsheet, Word document, or PDF — ready to preview or download.',
   },
   {
-    question: 'What file types can allig8or generate?',
+    question: 'What file types can allig8tor generate?',
     answer:
       'Websites (HTML with live preview), PowerPoint presentations (.pptx), Excel spreadsheets (.xlsx), Word documents (.docx), and print-ready PDFs.',
   },
   {
-    question: 'Is allig8or free to try?',
+    question: 'Is allig8tor free to try?',
     answer:
       'Yes. You can start building without a credit card. Signed-in users get daily limits; Pro and Team plans add higher limits when billing is enabled.',
   },

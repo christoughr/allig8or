@@ -177,7 +177,7 @@ export async function generateDOCX(data: DocumentData): Promise<Buffer> {
   }
 
   const doc = new Document({
-    creator: data.author ?? 'allig8or AI',
+    creator: data.author ?? 'allig8tor AI',
     title: data.title,
     styles: {
       paragraphStyles: [

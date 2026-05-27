@@ -14,19 +14,19 @@ export async function GET() {
       title: 'Try the AI generator — websites, decks, sheets, docs',
       link: absoluteUrl('/app'),
       description:
-        'Open the allig8or workspace and generate office files from a single prompt.',
+        'Open the allig8tor workspace and generate office files from a single prompt.',
       pubDate: new Date('2026-05-27T00:00:00Z'),
     },
     {
       title: 'Privacy Policy',
       link: absoluteUrl('/privacy'),
-      description: 'How allig8or handles your data.',
+      description: 'How allig8tor handles your data.',
       pubDate: new Date('2026-05-26T00:00:00Z'),
     },
     {
       title: 'Terms of Service',
       link: absoluteUrl('/terms'),
-      description: 'Terms for using allig8or.',
+      description: 'Terms for using allig8tor.',
       pubDate: new Date('2026-05-26T00:00:00Z'),
     },
   ];

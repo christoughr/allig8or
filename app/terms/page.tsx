@@ -3,7 +3,7 @@ import { buildPageMetadata } from '@/lib/seo';
 
 export const metadata = buildPageMetadata({
   title: 'Terms of Service',
-  description: 'Terms of use for the allig8or AI office suite.',
+  description: 'Terms of use for the allig8tor AI office suite.',
   path: '/terms',
 });
 
@@ -23,7 +23,7 @@ export default function TermsPage() {
           </p>
           <h2 className="text-lg font-semibold text-white">Service</h2>
           <p>
-            allig8or provides AI-generated websites, presentations, spreadsheets, documents, and
+            allig8tor provides AI-generated websites, presentations, spreadsheets, documents, and
             PDF-ready HTML. Outputs are provided &quot;as is&quot; — you are responsible for reviewing
             before client or commercial use.
           </p>

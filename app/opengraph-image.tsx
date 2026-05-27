@@ -2,7 +2,7 @@ import { ImageResponse } from 'next/og';
 import { SITE_NAME, SITE_TAGLINE } from '@/lib/site';
 
 export const runtime = 'edge';
-export const alt = 'allig8or — AI Office Suite';
+export const alt = 'allig8tor — AI Office Suite';
 export const size = { width: 1200, height: 630 };
 export const contentType = 'image/png';
 

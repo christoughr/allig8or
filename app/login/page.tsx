@@ -6,7 +6,7 @@ import { buildPageMetadata } from '@/lib/seo';
 
 export const metadata = buildPageMetadata({
   title: 'Sign in',
-  description: 'Sign in to allig8or to save projects and unlock daily AI generation limits.',
+  description: 'Sign in to allig8tor to save projects and unlock daily AI generation limits.',
   path: '/login',
   noIndex: true,
 });

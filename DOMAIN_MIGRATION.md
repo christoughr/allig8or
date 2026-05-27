@@ -171,6 +171,6 @@ Create **hello@allig8tor.com** in Name.com email forwarding (or Google Workspace
 
 ## What stays the same
 
-- Product name **allig8or** (brand spelling) — only the **domain** changes to **allig8tor.com**
+- Brand and domain are now **allig8tor** / **allig8tor.com** (GitHub/Vercel project slug may still be `allig8or`)
 - GitHub repo name `allig8or`, npm package name, Supabase project — no rename required
 - `NEXT_PUBLIC_SUPABASE_URL` / keys — unchanged (same Supabase project)

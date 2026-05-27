@@ -1,7 +1,7 @@
-# allig8or — AI Office Suite
+# allig8tor — AI Office Suite
 # https://www.allig8tor.com
 
-> allig8or is an AI-powered office suite. Users describe deliverables in plain language and receive websites, presentations (.pptx), spreadsheets (.xlsx), Word documents (.docx), or PDFs.
+> allig8tor is an AI-powered office suite. Users describe deliverables in plain language and receive websites, presentations (.pptx), spreadsheets (.xlsx), Word documents (.docx), or PDFs.
 
 ## Product
 - Website: https://www.allig8tor.com

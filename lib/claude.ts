@@ -56,7 +56,7 @@ RULES:
 - Animations: 1-2 subtle CSS transitions only. Respect prefers-reduced-motion:
     @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
 - NEVER use placeholder images. Use CSS gradients, shapes, or illustrated SVG backgrounds.
-- Add at the bottom: <!-- allig8or: sections=nav,hero,proof,features,cta,footer -->`,
+- Add at the bottom: <!-- allig8tor: sections=nav,hero,proof,features,cta,footer -->`,
 
   // ── PRESENTATION ───────────────────────────────────────────────────────────
   presentation: `${QUALITY_BAR}
@@ -157,7 +157,7 @@ RULES:
 JSON structure:
 {
   "title": "Document Title",
-  "author": "allig8or AI",
+  "author": "allig8tor AI",
   "sections": [
     {
       "heading": "Executive Summary",

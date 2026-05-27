@@ -3,7 +3,7 @@ import { buildPageMetadata } from '@/lib/seo';
 
 export const metadata = buildPageMetadata({
   title: 'Privacy Policy',
-  description: 'How allig8or collects, uses, and protects your data.',
+  description: 'How allig8tor collects, uses, and protects your data.',
   path: '/privacy',
 });
 
@@ -11,7 +11,7 @@ export default function PrivacyPage() {
   return (
     <LegalLayout title="Privacy Policy" updated="May 26, 2026">
       <p>
-        allig8or (&quot;we&quot;, &quot;us&quot;) operates allig8tor.com. This policy explains what we
+        allig8tor (&quot;we&quot;, &quot;us&quot;) operates allig8tor.com. This policy explains what we
         collect and how we use it when you use our AI Office Suite.
       </p>
       <h2>What we collect</h2>

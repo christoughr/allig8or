@@ -3,7 +3,7 @@ export const SITE_URL =
   process.env.NEXT_PUBLIC_APP_URL?.replace(/\/$/, '') ||
   'https://www.allig8tor.com';
 
-export const SITE_NAME = 'allig8or';
+export const SITE_NAME = 'allig8tor';
 export const SITE_TAGLINE = 'AI Office Suite';
 export const SITE_TITLE = `${SITE_NAME} — ${SITE_TAGLINE}`;
 export const SITE_DESCRIPTION =
@@ -22,7 +22,6 @@ export const SITE_KEYWORDS = [
   'AI PDF generator',
   'prompt to PowerPoint',
   'prompt to Excel',
-  'allig8or',
   'allig8tor',
 ] as const;
 
@@ -38,5 +37,5 @@ export const PUBLIC_ROUTES = [
 ];
 
 export const SOCIAL = {
-  twitter: '@allig8or',
+  twitter: '@allig8tor',
 } as const;

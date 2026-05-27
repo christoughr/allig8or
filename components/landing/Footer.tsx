@@ -5,7 +5,7 @@ export default function Footer() {
     <footer className="border-t border-white/5 px-6 py-10">
       <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 sm:flex-row">
         <p className="text-sm text-zinc-500">
-          © {new Date().getFullYear()} allig8or — AI Office Suite
+          © {new Date().getFullYear()} allig8tor — AI Office Suite
         </p>
         <div className="flex flex-wrap justify-center gap-6 text-sm text-zinc-500 sm:justify-end">
           <Link href="/app" className="hover:text-emerald-400">

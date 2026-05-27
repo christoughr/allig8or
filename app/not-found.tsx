@@ -3,7 +3,7 @@ import { buildPageMetadata } from '@/lib/seo';
 
 export const metadata = buildPageMetadata({
   title: 'Page not found',
-  description: 'The page you requested does not exist on allig8or.',
+  description: 'The page you requested does not exist on allig8tor.',
   path: '/404',
   noIndex: true,
 });

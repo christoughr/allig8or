@@ -17,7 +17,7 @@ export interface SpreadsheetData {
 
 export async function generateXLSX(data: SpreadsheetData): Promise<Buffer> {
   const workbook = new ExcelJS.Workbook();
-  workbook.creator = 'allig8or AI';
+  workbook.creator = 'allig8tor AI';
   workbook.created = new Date();
   workbook.title = data.title;
 

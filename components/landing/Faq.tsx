@@ -1,6 +1,6 @@
 const faqs = [
   {
-    q: 'What is allig8or?',
+    q: 'What is allig8tor?',
     a: 'An AI office suite. Describe what you need — get a website, pitch deck, spreadsheet, Word doc, or PDF. Prompt in, file out.',
   },
   {
@@ -13,11 +13,11 @@ const faqs = [
   },
   {
     q: 'Do I need design or coding skills?',
-    a: 'No templates or Figma required. If you can describe the deliverable, allig8or builds it.',
+    a: 'No templates or Figma required. If you can describe the deliverable, allig8tor builds it.',
   },
   {
     q: 'How is this different from ChatGPT?',
-    a: 'allig8or outputs real office files — structured decks, spreadsheets, and downloadable documents — not just chat text.',
+    a: 'allig8tor outputs real office files — structured decks, spreadsheets, and downloadable documents — not just chat text.',
   },
   {
     q: 'When will paid plans be available?',

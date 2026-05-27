@@ -76,7 +76,7 @@ function PreviewBar({
       <div className="hidden sm:flex flex-1 max-w-xs items-center gap-1.5 rounded-md border border-white/8 bg-zinc-900 px-2.5 py-1">
         <Globe size={11} strokeWidth={1.5} className="shrink-0 text-zinc-600" aria-hidden />
         <span className="truncate text-[11px] text-zinc-500 select-none">
-          preview.allig8or.local
+          preview.allig8tor.local
         </span>
       </div>
 

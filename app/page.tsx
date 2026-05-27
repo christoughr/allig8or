@@ -9,7 +9,7 @@ import { buildPageMetadata } from '@/lib/seo';
 import { SITE_DESCRIPTION, SITE_KEYWORDS } from '@/lib/site';
 
 export const metadata = buildPageMetadata({
-  title: 'allig8or — AI Office Suite | Websites, Decks, Sheets & Docs',
+  title: 'allig8tor — AI Office Suite | Websites, Decks, Sheets & Docs',
   description: SITE_DESCRIPTION,
   path: '/',
   keywords: [

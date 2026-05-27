@@ -42,7 +42,7 @@ export default function AppPreview() {
             <div className="hidden max-w-[220px] flex-1 items-center gap-1.5 rounded-md border border-white/8 bg-zinc-900 px-2.5 py-1 sm:flex">
               <Globe size={11} className="shrink-0 text-zinc-600" aria-hidden />
               <span className="truncate text-[11px] text-zinc-500 select-none">
-                preview.allig8or.local
+                preview.allig8tor.local
               </span>
             </div>
             <span className="text-xs text-zinc-500 sm:hidden">Preview</span>

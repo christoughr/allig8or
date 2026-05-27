@@ -1,4 +1,4 @@
-# allig8or — Launch readiness
+# allig8tor — Launch readiness
 
 **Live:** https://www.allig8tor.com · **Repo:** https://github.com/christoughr/allig8or
 

@@ -35,7 +35,7 @@ export default function ToolSelector({
       {/* Logo */}
       <Link
         href="/"
-        aria-label="allig8or home"
+        aria-label="allig8tor home"
         className="mr-2 flex shrink-0 items-center gap-2 text-sm font-semibold text-white"
       >
         <LogoMark className="h-8 w-8" />

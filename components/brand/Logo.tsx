@@ -37,7 +37,7 @@ export default function Logo({
       <LogoMark />
       {showWordmark && (
         <span className="text-lg font-semibold tracking-tight text-white">
-          allig8<span className="text-emerald-400">or</span>
+          allig8<span className="text-emerald-400">tor</span>
         </span>
       )}
     </Link>
