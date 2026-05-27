@@ -1,5 +1,7 @@
 import Link from 'next/link';
-import { PLANS } from '@/lib/lemonsqueezy';
+import { PLANS, getCheckoutUrl } from '@/lib/lemonsqueezy';
+
+const billingEnabled = Boolean(getCheckoutUrl('pro'));
 
 const features: Record<string, string[]> = {
   free: [
@@ -106,7 +108,7 @@ export default function Pricing() {
                     >
                       Start for free
                     </Link>
-                  ) : (
+                  ) : billingEnabled ? (
                     <a
                       href={`/api/checkout?plan=${id}`}
                       className={`block rounded-xl py-3 text-center text-sm font-semibold transition ${
@@ -117,6 +119,17 @@ export default function Pricing() {
                     >
                       Get {plan.name}
                     </a>
+                  ) : (
+                    <span
+                      className={`block rounded-xl py-3 text-center text-sm font-semibold ${
+                        highlight
+                          ? 'border border-emerald-500/30 bg-emerald-500/10 text-emerald-300'
+                          : 'border border-white/8 text-zinc-500'
+                      }`}
+                      title="Paid plans activate when our payment store is approved"
+                    >
+                      Coming soon
+                    </span>
                   )}
                 </div>
               </div>
@@ -125,7 +138,9 @@ export default function Pricing() {
         </div>
 
         <p className="mt-8 text-center text-sm text-zinc-600">
-          All plans include file downloads. No usage data sold. Cancel anytime.
+          {billingEnabled
+            ? 'All plans include file downloads. No usage data sold. Cancel anytime.'
+            : 'Free tier is live now. Pro & Team billing opens when our store is approved — use free in the meantime.'}
         </p>
       </div>
     </section>

@@ -21,7 +21,7 @@ const nextConfig: NextConfig = {
     ];
   },
   async redirects() {
-    const destination = 'https://allig8tor.com/:path*';
+    const destination = 'https://www.allig8tor.com/:path*';
     return [
       {
         source: '/:path*',

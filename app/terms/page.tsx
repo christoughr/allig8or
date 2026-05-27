@@ -1,8 +1,11 @@
 import Link from 'next/link';
+import { buildPageMetadata } from '@/lib/seo';
 
-export const metadata = {
-  title: 'Terms of Service — allig8or',
-};
+export const metadata = buildPageMetadata({
+  title: 'Terms of Service',
+  description: 'Terms of use for the allig8or AI office suite.',
+  path: '/terms',
+});
 
 export default function TermsPage() {
   return (

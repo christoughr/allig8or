@@ -100,12 +100,28 @@ async function findUserByEmail(
   return null;
 }
 
+/** Lemon Squeezy pings before billing is live — confirms route is reachable. */
+export async function GET() {
+  const configured = Boolean(process.env.LEMONSQUEEZY_WEBHOOK_SECRET);
+  return NextResponse.json({
+    ok: true,
+    billing: configured ? 'configured' : 'pending_store_approval',
+    message: configured
+      ? 'Webhook ready. Configure URL in Lemon Squeezy dashboard.'
+      : 'Store not live yet — add LEMONSQUEEZY_WEBHOOK_SECRET after approval.',
+  });
+}
+
 export async function POST(req: NextRequest) {
   const secret = process.env.LEMONSQUEEZY_WEBHOOK_SECRET;
   if (!secret) {
     return NextResponse.json(
-      { error: 'LEMONSQUEEZY_WEBHOOK_SECRET not set' },
-      { status: 500 }
+      {
+        error: 'Billing not configured',
+        detail:
+          'Lemon Squeezy store pending approval. Webhook will work after LEMONSQUEEZY_WEBHOOK_SECRET is set on Vercel.',
+      },
+      { status: 503 }
     );
   }
 

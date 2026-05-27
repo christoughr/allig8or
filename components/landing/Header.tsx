@@ -26,6 +26,12 @@ export default function Header() {
             Pricing
           </Link>
           <Link
+            href="#faq"
+            className="hidden text-sm text-zinc-400 transition hover:text-white sm:inline"
+          >
+            FAQ
+          </Link>
+          <Link
             href="/login?next=/app"
             className="hidden text-sm text-zinc-400 transition hover:text-white sm:inline"
           >

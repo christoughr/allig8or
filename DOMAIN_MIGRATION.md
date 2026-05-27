@@ -71,7 +71,7 @@ Wait for DNS propagation (often 5–30 minutes).
 1. Open https://vercel.com/onlyus/allig8or/settings/domains  
 2. **Add** `allig8tor.com` and `www.allig8tor.com` → verify DNS until both show **Valid**.  
 3. Set **allig8tor.com** as the **primary** production domain.  
-4. For **allig8or.com** and **www.allig8or.com** (already on the project): choose **Redirect to allig8tor.com** (308 permanent).  
+4. For **allig8or.com** and **www.allig8or.com** (already on the project): choose **Redirect to allig8tor.com** → pick **308 Permanent Redirect** (not 307/302). SEO treats 308 like 301; 308 is correct for a permanent domain move.  
    - Vercel’s dashboard redirect is the main mechanism.  
    - The app also has `next.config.ts` host redirects as a backup when traffic still hits the old host on Vercel.
 

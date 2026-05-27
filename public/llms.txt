@@ -1,0 +1,27 @@
+# allig8or — AI Office Suite
+# https://www.allig8tor.com
+
+> allig8or is an AI-powered office suite. Users describe deliverables in plain language and receive websites, presentations (.pptx), spreadsheets (.xlsx), Word documents (.docx), or PDFs.
+
+## Product
+- Website: https://www.allig8tor.com
+- App (generator): https://www.allig8tor.com/app
+- Sign in: https://www.allig8tor.com/login
+
+## Capabilities
+- AI website generator with live HTML preview
+- AI PowerPoint / pitch deck generator (.pptx)
+- AI Excel spreadsheet generator (.xlsx)
+- AI Word document generator (.docx)
+- AI PDF export
+
+## Pricing
+- Free tier available (no credit card)
+- Pro and Team plans coming when billing store is approved
+
+## Contact
+- hello@allig8tor.com
+
+## Legal
+- Privacy: https://www.allig8tor.com/privacy
+- Terms: https://www.allig8tor.com/terms

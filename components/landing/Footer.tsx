@@ -23,6 +23,9 @@ export default function Footer() {
           <Link href="/terms" className="hover:text-emerald-400">
             Terms
           </Link>
+          <a href="/feed.xml" className="hover:text-emerald-400">
+            RSS
+          </a>
         </div>
       </div>
     </footer>

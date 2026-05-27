@@ -1,5 +1,7 @@
 import type { Metadata } from 'next';
 import { Syne, DM_Sans, DM_Mono } from 'next/font/google';
+import JsonLd from '@/components/seo/JsonLd';
+import { rootMetadata } from '@/lib/seo';
 import './globals.css';
 
 const syne = Syne({
@@ -24,19 +26,16 @@ const dmMono = DM_Mono({
 });
 
 export const metadata: Metadata = {
-  title: 'allig8or — AI Office Suite',
-  description:
-    'Create websites, presentations, spreadsheets, and documents with AI. Prompt in, file out.',
+  ...rootMetadata,
   icons: {
     icon: '/icon',
     apple: '/apple-icon',
   },
-  openGraph: {
-    title: 'allig8or — AI Office Suite',
-    description: 'Prompt in, file out. AI replaces your entire office.',
-    url: 'https://allig8tor.com',
-    siteName: 'allig8or',
-    type: 'website',
+  alternates: {
+    ...rootMetadata.alternates,
+    types: {
+      'application/rss+xml': [{ url: '/feed.xml', title: 'allig8or updates' }],
+    },
   },
 };
 
@@ -48,6 +47,9 @@ export default function RootLayout({
       lang="en"
       className={`${syne.variable} ${dmSans.variable} ${dmMono.variable} h-full antialiased`}
     >
+      <head>
+        <JsonLd />
+      </head>
       <body className="min-h-full flex flex-col font-sans">{children}</body>
     </html>
   );

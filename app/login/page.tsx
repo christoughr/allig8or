@@ -2,9 +2,14 @@ import Link from 'next/link';
 import AuthForm from '@/components/auth/AuthForm';
 import Logo from '@/components/brand/Logo';
 
-export const metadata = {
-  title: 'Sign in — allig8or',
-};
+import { buildPageMetadata } from '@/lib/seo';
+
+export const metadata = buildPageMetadata({
+  title: 'Sign in',
+  description: 'Sign in to allig8or to save projects and unlock daily AI generation limits.',
+  path: '/login',
+  noIndex: true,
+});
 
 export default async function LoginPage({
   searchParams,

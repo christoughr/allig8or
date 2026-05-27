@@ -1,8 +1,11 @@
 import Link from 'next/link';
+import { buildPageMetadata } from '@/lib/seo';
 
-export const metadata = {
-  title: 'Privacy Policy — allig8or',
-};
+export const metadata = buildPageMetadata({
+  title: 'Privacy Policy',
+  description: 'How allig8or collects, uses, and protects your data.',
+  path: '/privacy',
+});
 
 export default function PrivacyPage() {
   return (
