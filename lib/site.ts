@@ -31,8 +31,6 @@ export const CONTACT_EMAIL = 'hello@allig8tor.com';
 /** Indexable marketing routes (no /app generator UI in sitemap — thin for SEO). */
 export const PUBLIC_ROUTES = [
   { path: '/', changeFrequency: 'weekly' as const, priority: 1 },
-  { path: '/blog', changeFrequency: 'weekly' as const, priority: 0.8 },
-  { path: '/use-cases', changeFrequency: 'monthly' as const, priority: 0.8 },
   { path: '/login', changeFrequency: 'monthly' as const, priority: 0.5 },
   { path: '/privacy', changeFrequency: 'yearly' as const, priority: 0.3 },
   { path: '/terms', changeFrequency: 'yearly' as const, priority: 0.3 },
