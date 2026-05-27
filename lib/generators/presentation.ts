@@ -1,4 +1,5 @@
 import PptxGenJS from 'pptxgenjs';
+import { normalizePresentationData } from '@/lib/normalizePresentation';
 
 interface SlideData {
   id: number;
@@ -26,7 +27,8 @@ export interface PresentationData {
   slides: SlideData[];
 }
 
-export async function generatePPTX(data: PresentationData): Promise<Buffer> {
+export async function generatePPTX(input: PresentationData): Promise<Buffer> {
+  const data = normalizePresentationData(input);
   const pptx = new PptxGenJS();
 
   pptx.layout = 'LAYOUT_WIDE';

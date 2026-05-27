@@ -2,7 +2,7 @@ import { generateWithClaude, parseJsonResponse } from '@/lib/claude';
 import { createGenerateRoute } from '@/lib/generateRoute';
 import { generateDOCX, type DocumentData } from '@/lib/generators/document';
 
-export const maxDuration = 60;
+export const maxDuration = 120;
 
 export const POST = createGenerateRoute('document', async ({ prompt, history }) => {
   const jsonStr = await generateWithClaude(prompt, 'document', history);

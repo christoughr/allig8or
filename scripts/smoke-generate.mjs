@@ -29,7 +29,16 @@ async function smokeTool(tool, prompt) {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ prompt, history: [] }),
     });
-    const data = await res.json();
+    const raw = await res.text();
+    let data;
+    try {
+      data = JSON.parse(raw);
+    } catch {
+      const snippet = raw.replace(/\s+/g, ' ').slice(0, 120);
+      console.error(`✗ ${label} — HTTP ${res.status}, non-JSON: ${snippet}`);
+      failed++;
+      return;
+    }
     if (!res.ok) {
       console.error(`✗ ${label} — HTTP ${res.status}: ${data.error ?? 'unknown'}`);
       failed++;

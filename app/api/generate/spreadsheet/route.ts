@@ -5,7 +5,7 @@ import {
   type SpreadsheetData,
 } from '@/lib/generators/spreadsheet';
 
-export const maxDuration = 60;
+export const maxDuration = 120;
 
 export const POST = createGenerateRoute('spreadsheet', async ({ prompt, history }) => {
   const jsonStr = await generateWithClaude(prompt, 'spreadsheet', history);

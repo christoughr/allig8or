@@ -5,7 +5,7 @@ import {
   type PresentationData,
 } from '@/lib/generators/presentation';
 
-export const maxDuration = 60;
+export const maxDuration = 120;
 
 export const POST = createGenerateRoute('presentation', async ({ prompt, history }) => {
   const jsonStr = await generateWithClaude(prompt, 'presentation', history);
