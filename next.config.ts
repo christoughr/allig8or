@@ -8,6 +8,12 @@ const nextConfig: NextConfig = {
       bodySizeLimit: '10mb',
     },
   },
+  async rewrites() {
+    return [
+      // Browsers request /favicon.ico first — serve our a8 PNG (not the old Next default "A")
+      { source: '/favicon.ico', destination: '/icon' },
+    ];
+  },
   async headers() {
     return [
       {

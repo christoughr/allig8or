@@ -91,7 +91,6 @@ export default function ChatPanel({
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const hints = emptyHints[activeTool];
-  const { Icon: HintIcon } = hints;
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -121,9 +120,12 @@ export default function ChatPanel({
       <div className="flex-1 overflow-y-auto p-4 space-y-3 min-h-0">
         {messages.length === 0 && (
           <div className="flex h-full min-h-[160px] flex-col items-center justify-center px-2 text-center">
-            <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-xl bg-emerald-500/10 ring-1 ring-emerald-500/20">
-              <HintIcon size={24} strokeWidth={1.5} className="text-emerald-500/70" aria-hidden />
-            </div>
+            <span
+              className="mb-3 flex h-12 w-12 items-center justify-center rounded-xl bg-emerald-500/10 text-2xl ring-1 ring-emerald-500/20"
+              aria-hidden
+            >
+              🐊
+            </span>
             <p className="text-sm font-semibold text-white">{hints.title}</p>
             <div className="mt-3 flex flex-col gap-1.5 w-full max-w-[260px]">
               {hints.examples.map((ex) => (

@@ -1,25 +1,23 @@
 import Link from 'next/link';
 
-export function LogoMark({ className = 'h-9 w-9' }: { className?: string }) {
+/** Emerald tile + crocodile mascot (page UI only — favicon stays separate) */
+export function LogoMark({
+  className = 'h-9 w-9',
+  size = 'md',
+}: {
+  className?: string;
+  size?: 'sm' | 'md' | 'lg';
+}) {
+  const text =
+    size === 'sm' ? 'text-sm' : size === 'lg' ? 'text-2xl' : 'text-lg';
+
   return (
-    <svg
-      viewBox="0 0 36 36"
-      fill="none"
-      className={className}
+    <span
+      className={`flex shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-emerald-400 to-teal-600 shadow-lg shadow-emerald-500/20 select-none ${text} ${className}`}
       aria-hidden
     >
-      <rect width="36" height="36" rx="10" fill="url(#g)" />
-      <path
-        d="M10 24V12h4.2c2.8 0 4.6 1.5 4.6 3.9 0 1.6-.8 2.8-2.1 3.4L20 24h-3.2l-2.8-4.2H13.2V24H10zm3.2-7.2h1c1.1 0 1.7-.5 1.7-1.3s-.6-1.3-1.7-1.3h-1v2.6zM22 24l5-12h3.4l-5 12H22z"
-        fill="#070b09"
-      />
-      <defs>
-        <linearGradient id="g" x1="0" y1="0" x2="36" y2="36">
-          <stop stopColor="#34d399" />
-          <stop offset="1" stopColor="#059669" />
-        </linearGradient>
-      </defs>
-    </svg>
+      🐊
+    </span>
   );
 }
 

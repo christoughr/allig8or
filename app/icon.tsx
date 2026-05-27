@@ -8,8 +8,8 @@ export default function Icon() {
     (
       <div
         style={{
-          width: '100%',
-          height: '100%',
+          width: 32,
+          height: 32,
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
@@ -17,19 +17,21 @@ export default function Icon() {
           borderRadius: 8,
         }}
       >
-        <span
+        <div
           style={{
+            display: 'flex',
             color: '#070b09',
-            fontSize: 20,
+            fontSize: 15,
             fontWeight: 800,
-            fontFamily: 'system-ui, sans-serif',
-            letterSpacing: -1,
+            fontFamily: 'ui-sans-serif, system-ui, sans-serif',
+            letterSpacing: -0.5,
+            lineHeight: 1,
           }}
         >
           a8
-        </span>
+        </div>
       </div>
     ),
-    { ...size }
+    { width: 32, height: 32 }
   );
 }

@@ -38,7 +38,7 @@ export default function ToolSelector({
         aria-label="allig8tor home"
         className="mr-2 flex shrink-0 items-center gap-2 text-sm font-semibold text-white"
       >
-        <LogoMark className="h-8 w-8" />
+        <LogoMark className="h-8 w-8" size="sm" />
         <span className="hidden font-heading sm:inline">
           allig8<span className="text-emerald-400">or</span>
         </span>

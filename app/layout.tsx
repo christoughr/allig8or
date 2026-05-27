@@ -28,7 +28,11 @@ const dmMono = DM_Mono({
 export const metadata: Metadata = {
   ...rootMetadata,
   icons: {
-    icon: '/icon',
+    icon: [
+      { url: '/favicon.svg', type: 'image/svg+xml' },
+      { url: '/icon', type: 'image/png', sizes: '32x32' },
+    ],
+    shortcut: '/icon',
     apple: '/apple-icon',
   },
   alternates: {
