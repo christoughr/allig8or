@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import type { ToolType } from '@/types';
 import UserMenu from '@/components/auth/UserMenu';
-import { LogoMark } from '@/components/brand/Logo';
+import Logo from '@/components/brand/Logo';
 
 // lucide-react v1.x — all icons confirmed available
 // If build fails on an icon, swap: Presentation→LayoutTemplate, Sheet→Table2, FileType→FileCode2
@@ -33,16 +33,7 @@ export default function ToolSelector({
   return (
     <div className="flex items-center gap-3 border-b border-white/10 bg-[#070b09] px-4 py-2.5">
       {/* Logo */}
-      <Link
-        href="/"
-        aria-label="allig8tor home"
-        className="mr-2 flex shrink-0 items-center gap-2 text-sm font-semibold text-white"
-      >
-        <LogoMark className="h-8 w-8" size="sm" />
-        <span className="hidden font-heading sm:inline">
-          allig8<span className="text-emerald-400">or</span>
-        </span>
-      </Link>
+      <Logo href="/" className="mr-2 shrink-0 [&_span:last-child]:hidden sm:[&_span:last-child]:inline" />
 
       {/* Tool tabs */}
       <div className="flex flex-1 gap-1 overflow-x-auto">
