@@ -37,6 +37,9 @@ export default function AppPreview() {
             open the real app
           </Link>
         </p>
+        <p className="mb-4 text-center text-xs text-zinc-600">
+          Built for output teams: faster delivery, consistent formatting, predictable monthly usage.
+        </p>
         <div className="overflow-hidden rounded-2xl border border-white/10 shadow-2xl shadow-black/60 ring-1 ring-white/5">
           <div className="flex items-center gap-2 border-b border-white/8 bg-zinc-950/90 px-3 py-2.5">
             <div className="hidden max-w-[220px] flex-1 items-center gap-1.5 rounded-md border border-white/8 bg-zinc-900 px-2.5 py-1 sm:flex">

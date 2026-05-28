@@ -10,7 +10,12 @@ import {
 import type { GenerationType } from '@/lib/claude';
 import { countProjectsForUser } from '@/lib/projects';
 
-const DAY_MS = 24 * 60 * 60 * 1000;
+function getCurrentMonthWindow() {
+  const now = new Date();
+  const start = new Date(now.getFullYear(), now.getMonth(), 1);
+  const end = new Date(now.getFullYear(), now.getMonth() + 1, 1);
+  return { start, end };
+}
 
 export type LimitResult =
   | {
@@ -52,11 +57,12 @@ export async function resolveUserPlan(userId: string): Promise<PlanId> {
   return plan in PLANS ? plan : 'free';
 }
 
-async function countUserGenerationsToday(userId: string): Promise<number> {
+async function countUserGenerationsThisMonth(userId: string): Promise<number> {
   const admin = getAdminClient();
   if (!admin) return 0;
 
-  const since = new Date(Date.now() - DAY_MS).toISOString();
+  const { start } = getCurrentMonthWindow();
+  const since = start.toISOString();
   const { count, error } = await admin
     .from('usage')
     .select('*', { count: 'exact', head: true })
@@ -88,16 +94,17 @@ export async function checkGenerationLimit(
         plan: 'free',
         userId: null,
         message:
-          'Rate limit reached (10/hour per IP). Sign in for daily limits or upgrade to Pro.',
+          'Rate limit reached (10/hour per IP). Sign in for monthly limits or upgrade to a paid plan.',
       };
     }
     return { allowed: true, remaining, resetAt, plan: 'free', userId: null };
   }
 
   const plan = await resolveUserPlan(userId);
-  const limit = PLANS[plan].limits.generationsPerDay;
-  const used = await countUserGenerationsToday(userId);
-  const resetAt = Date.now() + DAY_MS;
+  const limit = PLANS[plan].limits.generationsPerMonth;
+  const used = await countUserGenerationsThisMonth(userId);
+  const { end } = getCurrentMonthWindow();
+  const resetAt = end.getTime();
 
   if (used >= limit) {
     return {
@@ -108,8 +115,8 @@ export async function checkGenerationLimit(
       userId,
       message:
         plan === 'free'
-          ? `Daily limit reached (${limit}/day). Upgrade to Pro for 200/day.`
-          : `Daily limit reached (${limit}/day). Resets in 24 hours.`,
+          ? `Monthly limit reached (${limit}/month). Upgrade to Starter (80/month), Pro (300/month), or Team (1000/month).`
+          : `Monthly limit reached (${limit}/month). Resets next month.`,
     };
   }
 

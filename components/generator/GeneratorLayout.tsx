@@ -163,7 +163,7 @@ export default function GeneratorLayout({
           ...prev,
           {
             role: 'assistant',
-            content: `Limit reached. Try again in ${retryAfter}s, sign in for daily limits, or upgrade to Pro (200/day).`,
+            content: `Limit reached. Try again in ${retryAfter}s, sign in for monthly limits, or upgrade to a paid plan.`,
           },
         ]);
         return;

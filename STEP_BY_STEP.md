@@ -24,8 +24,9 @@
 
 | Product | Price | Billing | → Vercel env |
 |---------|-------|---------|--------------|
-| allig8or Pro | $29 | Monthly subscription | `NEXT_PUBLIC_LEMONSQUEEZY_VARIANT_PRO` |
-| allig8or Team | $79 | Monthly subscription | `NEXT_PUBLIC_LEMONSQUEEZY_VARIANT_TEAM` |
+| allig8or Starter | $149 | Monthly subscription | `NEXT_PUBLIC_LEMONSQUEEZY_VARIANT_STARTER` |
+| allig8or Pro | $399 | Monthly subscription | `NEXT_PUBLIC_LEMONSQUEEZY_VARIANT_PRO` |
+| allig8or Team | $999 | Monthly subscription | `NEXT_PUBLIC_LEMONSQUEEZY_VARIANT_TEAM` |
 
 각 상품 → Variants → **Variant ID** (UUID) 복사
 
@@ -76,6 +77,7 @@ https://allig8or.com/api/webhooks/lemonsqueezy
 LEMONSQUEEZY_API_KEY=...
 LEMONSQUEEZY_WEBHOOK_SECRET=...
 NEXT_PUBLIC_LEMONSQUEEZY_STORE_ID=allig8or
+NEXT_PUBLIC_LEMONSQUEEZY_VARIANT_STARTER=...
 NEXT_PUBLIC_LEMONSQUEEZY_VARIANT_PRO=...
 NEXT_PUBLIC_LEMONSQUEEZY_VARIANT_TEAM=...
 ```

@@ -44,7 +44,7 @@ types/index.ts
 - Landing: conversion, clarity, trust, mobile
 - Generator: empty/error/rate-limit states, tool switching, preview UX
 - Copy: headline, CTAs, pricing clarity
-- Does it feel worth $29/mo?
+- Does it feel worth premium monthly pricing?
 
 ### B. Engineering
 - API security (unauthenticated generate routes, rate limit in-memory)

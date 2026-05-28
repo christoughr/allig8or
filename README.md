@@ -48,8 +48,9 @@ gh auth login   # log in as christoughr on this Mac
 ## Lemon Squeezy setup
 
 1. [app.lemonsqueezy.com](https://app.lemonsqueezy.com) → Store → Products  
-   - **Pro** $29/mo → copy **Variant ID**  
-   - **Team** $79/mo → copy **Variant ID**
+   - **Starter** $149/mo → copy **Variant ID**  
+   - **Pro** $399/mo → copy **Variant ID**  
+   - **Team** $999/mo → copy **Variant ID**
 2. Settings → API → create API key → `LEMONSQUEEZY_API_KEY`
 3. Settings → Webhooks → URL: `https://allig8or.com/api/webhooks/lemonsqueezy`  
    Events: `subscription_*` → copy signing secret → `LEMONSQUEEZY_WEBHOOK_SECRET`

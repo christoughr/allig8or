@@ -4,18 +4,21 @@ export const SITE_URL =
   'https://www.allig8tor.com';
 
 export const SITE_NAME = 'allig8tor';
-export const SITE_TAGLINE = 'AI Office Suite';
+export const SITE_TAGLINE = 'Premium AI Production Suite';
 export const SITE_TITLE = `${SITE_NAME} — ${SITE_TAGLINE}`;
 export const SITE_DESCRIPTION =
-  'Create websites, pitch decks, spreadsheets, Word documents, and PDFs with AI. Describe what you need in plain language — prompt in, office file out. Free to start.';
+  'Generate client-ready websites, pitch decks, spreadsheets, Word documents, and PDFs with AI. Monthly-capped plans built for high-output teams.';
 
 /** Primary SEO keywords (landing + metadata). */
 export const SITE_KEYWORDS = [
   'AI office suite',
+  'AI production suite',
   'AI document generator',
   'AI presentation maker',
   'AI spreadsheet generator',
   'AI website builder',
+  'AI file generator',
+  'client-ready document automation',
   'generate PowerPoint with AI',
   'AI pitch deck',
   'AI Word document',

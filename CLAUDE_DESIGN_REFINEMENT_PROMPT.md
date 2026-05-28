@@ -59,4 +59,4 @@ app/layout.tsx (typography)
 3. **Code** — full updated files or minimal diffs per file
 4. **Optional** — 2 alternative hero headline options in comments
 
-Be opinionated. Make it feel like a $29/mo product on day one.
+Be opinionated. Make it feel like a premium product on day one.

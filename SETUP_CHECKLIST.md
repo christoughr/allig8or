@@ -41,15 +41,16 @@ Generator 동작: https://allig8or-lovat.vercel.app/app
 
 allig8or 스토어가 아직 승인 안 됐어도 **mnemonic** (이미 approved)로 결제 테스트 가능.
 
-- 상품 이름: `allig8or Pro` / `allig8or Team` (mnemonic 스토어 안에 생성)
+- 상품 이름: `allig8or Starter` / `allig8or Pro` / `allig8or Team` (mnemonic 스토어 안에 생성)
 - 고객 영수증에는 mnemonic으로 나올 수 있음 → 승인 후 allig8or 스토어로 이전
 
 ### 할 일
 
 1. https://app.lemonsqueezy.com → **mnemonic** 스토어 선택
 2. **Products** → New:
-   - `allig8or Pro` — $29/mo subscription → **Variant ID** 복사
-   - `allig8or Team` — $79/mo subscription → **Variant ID** 복사
+   - `allig8or Starter` — $149/mo subscription → **Variant ID** 복사
+   - `allig8or Pro` — $399/mo subscription → **Variant ID** 복사
+   - `allig8or Team` — $999/mo subscription → **Variant ID** 복사
 3. **Settings → Webhooks** → Add:
    - URL: `https://allig8or.com/api/webhooks/lemonsqueezy` (DNS 후) 또는 임시 `https://allig8or-lovat.vercel.app/api/webhooks/lemonsqueezy`
    - Events: `subscription_*`
@@ -61,6 +62,7 @@ allig8or 스토어가 아직 승인 안 됐어도 **mnemonic** (이미 approved)
 LEMONSQUEEZY_API_KEY=...
 LEMONSQUEEZY_WEBHOOK_SECRET=...
 NEXT_PUBLIC_LEMONSQUEEZY_STORE_ID=mnemonic
+NEXT_PUBLIC_LEMONSQUEEZY_VARIANT_STARTER=...
 NEXT_PUBLIC_LEMONSQUEEZY_VARIANT_PRO=...
 NEXT_PUBLIC_LEMONSQUEEZY_VARIANT_TEAM=...
 ```
@@ -117,6 +119,7 @@ NEXT_PUBLIC_APP_URL=https://allig8or.vercel.app
 LEMONSQUEEZY_API_KEY
 LEMONSQUEEZY_WEBHOOK_SECRET
 NEXT_PUBLIC_LEMONSQUEEZY_STORE_ID
+NEXT_PUBLIC_LEMONSQUEEZY_VARIANT_STARTER
 NEXT_PUBLIC_LEMONSQUEEZY_VARIANT_PRO
 NEXT_PUBLIC_LEMONSQUEEZY_VARIANT_TEAM
 ```
@@ -138,8 +141,9 @@ npx vercel --prod
 ## 2. Lemon Squeezy (15분)
 
 1. https://app.lemonsqueezy.com
-2. **Products** → Pro $29/mo → Variant ID 복사
-3. **Products** → Team $79/mo → Variant ID 복사
+2. **Products** → Starter $149/mo → Variant ID 복사
+3. **Products** → Pro $399/mo → Variant ID 복사
+4. **Products** → Team $999/mo → Variant ID 복사
 4. **Settings → API** → API key
 5. **Settings → Webhooks** → Add:
    - URL: `https://allig8or.vercel.app/api/webhooks/lemonsqueezy`

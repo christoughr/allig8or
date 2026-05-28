@@ -17,7 +17,7 @@
 
 ## Pricing
 - Free tier available (no credit card)
-- Pro and Team plans coming when billing store is approved
+- Paid plans are Starter ($149/mo), Pro ($399/mo), and Team ($999/mo), each with monthly usage limits
 
 ## Contact
 - hello@allig8tor.com

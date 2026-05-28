@@ -1,12 +1,12 @@
 import { ImageResponse } from 'next/og';
-import { SITE_NAME, SITE_TAGLINE } from '@/lib/site';
+import { SITE_NAME } from '@/lib/site';
 
 export const runtime = 'edge';
 export const alt = 'allig8tor — Premium AI Production Suite';
 export const size = { width: 1200, height: 630 };
 export const contentType = 'image/png';
 
-export default function OgImage() {
+export default function TwitterImage() {
   return new ImageResponse(
     (
       <div
@@ -24,19 +24,19 @@ export default function OgImage() {
       >
         <div
           style={{
-            fontSize: 28,
+            fontSize: 24,
             fontWeight: 600,
             color: '#34d399',
             marginBottom: 24,
           }}
         >
-          {SITE_TAGLINE}
+          Premium AI Production Suite
         </div>
         <div style={{ fontSize: 72, fontWeight: 700, lineHeight: 1.05, maxWidth: 900 }}>
           {SITE_NAME}
         </div>
-        <div style={{ fontSize: 32, color: '#a1a1aa', marginTop: 32, maxWidth: 800 }}>
-          Websites · Presentations · Spreadsheets · Documents · PDFs — from one prompt
+        <div style={{ fontSize: 30, color: '#a1a1aa', marginTop: 32, maxWidth: 900 }}>
+          Websites, decks, sheets, docs, and PDFs from one prompt
         </div>
       </div>
     ),

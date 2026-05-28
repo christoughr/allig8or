@@ -5,6 +5,7 @@ export const metadata = buildPageMetadata({
   description:
     'Generate websites, PowerPoint decks, Excel spreadsheets, Word documents, and PDFs with AI. Open the allig8tor workspace.',
   path: '/app',
+  noIndex: true,
 });
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {

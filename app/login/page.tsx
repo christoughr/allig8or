@@ -6,7 +6,7 @@ import { buildPageMetadata } from '@/lib/seo';
 
 export const metadata = buildPageMetadata({
   title: 'Sign in',
-  description: 'Sign in to allig8tor to save projects and unlock daily AI generation limits.',
+  description: 'Sign in to allig8tor to save projects and unlock monthly AI generation limits.',
   path: '/login',
   noIndex: true,
 });
@@ -29,7 +29,7 @@ export default async function LoginPage({
         <div className="rounded-2xl border border-white/10 bg-zinc-950/80 p-8 shadow-xl">
           <h1 className="text-xl font-bold text-white">Welcome back</h1>
           <p className="mt-1 text-sm text-zinc-500">
-            Sign in to save projects and unlock daily limits.
+            Sign in to save projects and unlock monthly limits.
           </p>
 
           {params.error && (

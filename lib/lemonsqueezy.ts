@@ -2,7 +2,7 @@
  * Lemon Squeezy billing — https://docs.lemonsqueezy.com
  *
  * Dashboard setup:
- * 1. Create store + products (Pro $29, Team $79)
+ * 1. Create store + products (Starter $149, Pro $399, Team $999)
  * 2. Copy variant IDs into env
  * 3. Webhook → https://www.allig8tor.com/api/webhooks/lemonsqueezy (after store approval)
  */
@@ -14,7 +14,19 @@ export const PLANS = {
     variantId: null as string | null,
     limits: {
       projects: 5,
-      generationsPerDay: 10,
+      generationsPerMonth: 1,
+      fileDownloads: true,
+      customDomain: false,
+      teamMembers: 1,
+    },
+  },
+  starter: {
+    name: 'Starter',
+    price: 149,
+    variantId: process.env.NEXT_PUBLIC_LEMONSQUEEZY_VARIANT_STARTER ?? '',
+    limits: {
+      projects: 25,
+      generationsPerMonth: 80,
       fileDownloads: true,
       customDomain: false,
       teamMembers: 1,
@@ -22,11 +34,11 @@ export const PLANS = {
   },
   pro: {
     name: 'Pro',
-    price: 29,
+    price: 399,
     variantId: process.env.NEXT_PUBLIC_LEMONSQUEEZY_VARIANT_PRO ?? '',
     limits: {
       projects: -1,
-      generationsPerDay: 200,
+      generationsPerMonth: 300,
       fileDownloads: true,
       customDomain: true,
       teamMembers: 1,
@@ -34,14 +46,14 @@ export const PLANS = {
   },
   team: {
     name: 'Team',
-    price: 79,
+    price: 999,
     variantId: process.env.NEXT_PUBLIC_LEMONSQUEEZY_VARIANT_TEAM ?? '',
     limits: {
       projects: -1,
-      generationsPerDay: 1000,
+      generationsPerMonth: 1000,
       fileDownloads: true,
       customDomain: true,
-      teamMembers: 10,
+      teamMembers: 5,
     },
   },
 } as const;
@@ -52,7 +64,7 @@ const STORE_ID = process.env.NEXT_PUBLIC_LEMONSQUEEZY_STORE_ID ?? '';
 
 /** Hosted checkout URL (no SDK required for MVP) */
 export function getCheckoutUrl(
-  planId: 'pro' | 'team',
+  planId: 'starter' | 'pro' | 'team',
   options?: { userId?: string; email?: string }
 ): string | null {
   const variantId = PLANS[planId].variantId;
@@ -74,6 +86,7 @@ export function getCheckoutUrl(
 export function planFromVariantName(variantName: string): PlanId {
   const lower = variantName.toLowerCase();
   if (lower.includes('team')) return 'team';
+  if (lower.includes('starter')) return 'starter';
   if (lower.includes('pro')) return 'pro';
   return 'free';
 }

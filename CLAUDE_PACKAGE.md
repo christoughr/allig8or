@@ -90,7 +90,7 @@ PASS 1 — Full review per CLAUDE_FULL_REVIEW_PROMPT.md format:
 Executive summary, Scorecard 1-10, Critical, High, Nice to have, Suggested diffs (minimal), Roadmap, Competitor positioning.
 
 PASS 2 — Launch blockers for paid users:
-What must ship before charging $29/mo Pro? Auth? Usage limits? Supabase Storage instead of base64?
+What must ship before charging $399/mo Pro? Auth? Usage limits? Supabase Storage instead of base64?
 
 Rules:
 - Never suggest Stripe

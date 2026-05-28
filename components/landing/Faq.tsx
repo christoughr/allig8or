@@ -9,7 +9,7 @@ const faqs = [
   },
   {
     q: 'Is it free to start?',
-    a: 'Yes. No credit card required. Create an account to save work and unlock signed-in daily limits.',
+    a: 'Yes. No credit card required. Free includes 1 generation per month for evaluation.',
   },
   {
     q: 'Do I need design or coding skills?',
@@ -21,7 +21,15 @@ const faqs = [
   },
   {
     q: 'When will paid plans be available?',
-    a: 'Pro ($29/mo) and Team ($79/mo) launch when our payment store is approved. The free tier works today.',
+    a: 'Starter ($149/mo), Pro ($399/mo), and Team ($999/mo) are usage-limited monthly plans. Paid billing launches when our payment store is approved. The free tier works today.',
+  },
+  {
+    q: 'Why is pricing higher than typical AI tools?',
+    a: 'allig8tor is priced as a production tool that outputs client-ready files, not just text. Pricing is designed to replace manual deck/doc/sheet production time while keeping hard monthly caps.',
+  },
+  {
+    q: 'What is your risk-reversal policy?',
+    a: 'No annual lock-in. Plans are monthly and cancel anytime, so teams can validate ROI before scaling usage.',
   },
 ];
 

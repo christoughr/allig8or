@@ -142,6 +142,7 @@ NEXT_PUBLIC_APP_URL=https://allig8or.com
 LEMONSQUEEZY_API_KEY=your_lemonsqueezy_api_key
 LEMONSQUEEZY_WEBHOOK_SECRET=your_webhook_signing_secret
 NEXT_PUBLIC_LEMONSQUEEZY_STORE_ID=your-store-slug
+NEXT_PUBLIC_LEMONSQUEEZY_VARIANT_STARTER=variant_uuid
 NEXT_PUBLIC_LEMONSQUEEZY_VARIANT_PRO=variant_uuid
 NEXT_PUBLIC_LEMONSQUEEZY_VARIANT_TEAM=variant_uuid
 ```
@@ -1055,8 +1056,8 @@ npm run dev
 
 ## 💰 Pricing (Lemon Squeezy)
 
-See `lib/lemonsqueezy.ts` — Pro $29, Team $79 variant IDs in env.
-Checkout: `/api/checkout?plan=pro|team`
+See `lib/lemonsqueezy.ts` — Starter $149, Pro $399, Team $999 variant IDs in env.
+Checkout: `/api/checkout?plan=starter|pro|team`
 Webhook: `/api/webhooks/lemonsqueezy`
 
 ---
@@ -1081,9 +1082,10 @@ Social proof:
   "Used by 10,000+ creators, founders, and teams"
 
 Pricing:
-  Free: 10 generations/day
-  Pro $29/mo: Unlimited + custom domain
-  Team $79/mo: 10 members + priority AI
+  Free: 20 generations/month
+  Starter $149/mo: 80 generations/month
+  Pro $399/mo: 300 generations/month
+  Team $999/mo: 1000 generations/month, 5 seats + priority AI
 ```
 
 ---

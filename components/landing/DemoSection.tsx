@@ -57,7 +57,7 @@ export default function DemoSection() {
             Five tools. One conversation.
           </h2>
           <p className="mt-4 text-base text-zinc-400">
-            Replace the tab-switching chaos of M365 and Google Workspace.
+            Replace fragmented manual production with one output-focused workflow.
           </p>
         </div>
 

@@ -4,7 +4,10 @@ import { getAuthUser } from '@/lib/supabase/server';
 import { getAdminClient } from '@/lib/supabase/admin';
 import { resolveUserPlan } from '@/lib/generationLimits';
 
-const DAY_MS = 24 * 60 * 60 * 1000;
+function getCurrentMonthStartIso() {
+  const now = new Date();
+  return new Date(now.getFullYear(), now.getMonth(), 1).toISOString();
+}
 
 export async function GET() {
   const user = await getAuthUser();
@@ -18,13 +21,13 @@ export async function GET() {
   }
 
   const plan = await resolveUserPlan(user.id);
-  const limit = PLANS[plan].limits.generationsPerDay;
+  const limit = PLANS[plan].limits.generationsPerMonth;
 
   const admin = getAdminClient();
   let used = 0;
 
   if (admin) {
-    const since = new Date(Date.now() - DAY_MS).toISOString();
+    const since = getCurrentMonthStartIso();
     const { count } = await admin
       .from('usage')
       .select('*', { count: 'exact', head: true })

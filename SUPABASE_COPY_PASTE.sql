@@ -56,7 +56,7 @@ create table if not exists subscriptions (
   user_id uuid references auth.users(id) on delete cascade not null unique,
   lemonsqueezy_customer_id text unique,
   lemonsqueezy_subscription_id text unique,
-  plan text not null default 'free' check (plan in ('free', 'pro', 'team')),
+  plan text not null default 'free' check (plan in ('free', 'starter', 'pro', 'team')),
   status text not null default 'active',
   current_period_end timestamp with time zone,
   created_at timestamp with time zone default now(),

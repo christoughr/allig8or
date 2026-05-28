@@ -31,7 +31,7 @@ export default function Resources() {
           Guides & use cases
         </h2>
         <p className="mt-4 text-center text-zinc-400">
-          Learn how teams use allig8tor — then open the generator.
+          See where premium teams recover time and protect output quality.
         </p>
         <div className="mt-12 grid gap-4 sm:grid-cols-2">
           {links.map((item) => (

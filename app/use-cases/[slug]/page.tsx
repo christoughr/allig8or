@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation';
 import ContentShell from '@/components/content/ContentShell';
 import { USE_CASES, getUseCase } from '@/lib/use-cases';
 import { buildPageMetadata } from '@/lib/seo';
+import { getAllPosts } from '@/lib/blog';
 
 export function generateStaticParams() {
   return USE_CASES.map((u) => ({ slug: u.slug }));
@@ -33,6 +34,9 @@ export default async function UseCasePage({
   const { slug } = await params;
   const uc = getUseCase(slug);
   if (!uc) notFound();
+  const relatedPosts = getAllPosts()
+    .filter((p) => (p.keywords ?? []).some((k) => uc.keywords.includes(k)))
+    .slice(0, 3);
 
   return (
     <ContentShell backHref="/use-cases" backLabel="← All use cases">
@@ -47,6 +51,23 @@ export default async function UseCasePage({
           </section>
         ))}
       </div>
+      {relatedPosts.length > 0 && (
+        <section className="mt-12 rounded-2xl border border-white/10 bg-zinc-900/30 p-6">
+          <h2 className="text-lg font-semibold text-white">Related guides</h2>
+          <ul className="mt-4 grid gap-3 sm:grid-cols-2">
+            {relatedPosts.map((post) => (
+              <li key={post.slug}>
+                <Link
+                  href={`/blog/${post.slug}`}
+                  className="block rounded-xl border border-white/10 bg-zinc-950/60 px-4 py-3 text-sm text-zinc-300 transition hover:border-emerald-500/30 hover:text-white"
+                >
+                  {post.title}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
 
       <div className="mt-12 rounded-2xl border border-emerald-500/25 bg-emerald-500/5 p-8 text-center">
         <Link

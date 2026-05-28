@@ -21,7 +21,7 @@ const faqItems = [
   {
     question: 'Is allig8tor free to try?',
     answer:
-      'Yes. You can start building without a credit card. Signed-in users get daily limits; Pro and Team plans add higher limits when billing is enabled.',
+      'Yes. You can start building without a credit card. Free includes one generation per month, and paid plans use tiered monthly allowances without unlimited usage.',
   },
   {
     question: 'Do I need design or coding skills?',
@@ -62,11 +62,13 @@ export default function JsonLd() {
     '@type': 'SoftwareApplication',
     name: SITE_NAME,
     applicationCategory: 'BusinessApplication',
+    applicationSubCategory: 'ProductivityApplication',
     operatingSystem: 'Web',
     offers: {
       '@type': 'Offer',
       price: '0',
       priceCurrency: 'USD',
+      availability: 'https://schema.org/InStock',
     },
     description: SITE_DESCRIPTION,
     url: absoluteUrl('/app'),

@@ -6,9 +6,9 @@ export async function GET(req: NextRequest) {
   const userId = req.nextUrl.searchParams.get('userId') ?? undefined;
   const email = req.nextUrl.searchParams.get('email') ?? undefined;
 
-  if (plan !== 'pro' && plan !== 'team') {
+  if (plan !== 'starter' && plan !== 'pro' && plan !== 'team') {
     return NextResponse.json(
-      { error: 'Invalid plan. Use pro or team.' },
+      { error: 'Invalid plan. Use starter, pro, or team.' },
       { status: 400 }
     );
   }
@@ -19,7 +19,7 @@ export async function GET(req: NextRequest) {
     return NextResponse.json(
       {
         error:
-          'Checkout not configured. Set NEXT_PUBLIC_LEMONSQUEEZY_STORE_ID and variant IDs.',
+          'Checkout not configured. Set NEXT_PUBLIC_LEMONSQUEEZY_STORE_ID and Starter/Pro/Team variant IDs.',
       },
       { status: 503 }
     );

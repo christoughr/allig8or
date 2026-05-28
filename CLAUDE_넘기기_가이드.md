@@ -23,7 +23,7 @@
          ↓
 [8] Auth + 유료 한도 (유료 오픈 전)
          ↓
-[9] 마케팅 오픈 ($29 Pro)
+[9] 마케팅 오픈 ($399 Pro)
 ```
 
 ---
@@ -170,7 +170,7 @@ Do TWO passes:
 PASS 1 — Full review per CLAUDE_FULL_REVIEW_PROMPT.md:
 Executive summary, Scorecard 1-10, Critical, High, Nice to have, Suggested diffs (minimal), Roadmap, Competitor positioning.
 
-PASS 2 — Launch blockers before charging $29/mo Pro:
+PASS 2 — Launch blockers before charging $399/mo Pro:
 What MUST ship? Auth? Usage limits tied to plan? Supabase Storage vs base64? Rate limit bypass risks?
 
 Rules:
@@ -199,8 +199,8 @@ Read CLAUDE_PACKAGE.md and CLAUDE_FULL_REVIEW_PROMPT.md. ZIP attached.
 |------|-----|
 | Webhook URL | `https://allig8or.com/api/webhooks/lemonsqueezy` |
 | 이벤트 | `subscription_created`, `updated`, `resumed`, `payment_success`, `cancelled`, `expired` (또는 All subscription events) |
-| Vercel env | `LEMONSQUEEZY_API_KEY`, `LEMONSQUEEZY_WEBHOOK_SECRET`, `NEXT_PUBLIC_LEMONSQUEEZY_STORE_ID`, `VARIANT_PRO`, `VARIANT_TEAM` |
-| 승인 전 | `STORE_ID=mnemonic` + mnemonic 스토어에 Pro/Team 상품 만들어도 됨 |
+| Vercel env | `LEMONSQUEEZY_API_KEY`, `LEMONSQUEEZY_WEBHOOK_SECRET`, `NEXT_PUBLIC_LEMONSQUEEZY_STORE_ID`, `VARIANT_STARTER`, `VARIANT_PRO`, `VARIANT_TEAM` |
+| 승인 전 | `STORE_ID=mnemonic` + mnemonic 스토어에 Starter/Pro/Team 상품 만들어도 됨 |
 
 템플릿: `.env.example`
 
@@ -220,7 +220,7 @@ Read CLAUDE_PACKAGE.md and CLAUDE_FULL_REVIEW_PROMPT.md. ZIP attached.
 |------|-----|
 | Auth (Supabase) | 누가 Pro인지 |
 | `/app` 보호 | 무한 무료 생성 방지 |
-| 플랜별 한도 | IP 10/hr → Pro 200/day |
+| 플랜별 한도 | IP 10/hr + 플랜별 월 한도 (Starter 80/mo, Pro 300/mo, Team 1000/mo) |
 | base64 → Storage | 큰 PPTX/XLSX URL 안정화 |
 | Webhook → DB | 구독 상태 반영 |
 

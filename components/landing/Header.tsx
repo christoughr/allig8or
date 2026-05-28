@@ -47,7 +47,7 @@ export default function Header() {
             href="/app"
             className="rounded-full bg-emerald-500 px-5 py-2 text-sm font-semibold text-[#070b09] shadow-lg shadow-emerald-500/25 transition hover:bg-emerald-400"
           >
-            Open app
+            Start production
           </Link>
         </nav>
       </div>

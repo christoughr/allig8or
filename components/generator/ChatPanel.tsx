@@ -208,14 +208,14 @@ export default function ChatPanel({
             <a href="/login?next=/app" className="font-semibold underline underline-offset-2 hover:text-amber-200">
               Sign in
             </a>{' '}
-            for daily limits, or{' '}
+            for monthly limits, or{' '}
             <a
-              href="/api/checkout?plan=pro"
+              href="/api/checkout?plan=starter"
               className="font-semibold underline underline-offset-2 hover:text-amber-200"
             >
-              upgrade to Pro
+              upgrade to Starter
             </a>{' '}
-            (200/day).
+            (80/month).
           </div>
         )}
 

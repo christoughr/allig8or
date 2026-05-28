@@ -62,7 +62,7 @@ export default function UserMenu() {
     );
   }
 
-  const checkoutParams = new URLSearchParams({ plan: 'pro' });
+  const checkoutParams = new URLSearchParams({ plan: 'starter' });
   checkoutParams.set('userId', me.user.id);
   if (me.user.email) checkoutParams.set('email', me.user.email);
 
@@ -70,7 +70,7 @@ export default function UserMenu() {
     <div className="flex items-center gap-2">
       {me.usage && (
         <span className="hidden text-[11px] text-zinc-500 lg:inline">
-          {me.usage.remaining}/{me.usage.limit} today ·{' '}
+          {me.usage.remaining}/{me.usage.limit} this month ·{' '}
           <span className="capitalize text-emerald-500/80">{me.plan}</span>
         </span>
       )}
@@ -80,7 +80,7 @@ export default function UserMenu() {
           className="hidden items-center gap-1 rounded-lg bg-emerald-500/15 px-2.5 py-1 text-[11px] font-semibold text-emerald-300 ring-1 ring-emerald-500/25 transition hover:bg-emerald-500/25 sm:flex"
         >
           <Sparkles size={12} aria-hidden />
-          Pro
+          Starter
         </a>
       )}
       <Link
