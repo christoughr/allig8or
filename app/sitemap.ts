@@ -14,6 +14,22 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority,
   }));
 
+  let dynamicBlogPages: MetadataRoute.Sitemap = [];
+  try {
+    dynamicBlogPages = getAllPosts().map((post) => {
+      const parsedDate = new Date(post.date);
+      return {
+        url: absoluteUrl(`/blog/${post.slug}`),
+        // Guard against malformed frontmatter dates breaking sitemap generation.
+        lastModified: Number.isNaN(parsedDate.getTime()) ? lastModified : parsedDate,
+        changeFrequency: 'monthly' as const,
+        priority: 0.7,
+      };
+    });
+  } catch (error) {
+    console.error('[sitemap] failed to load blog posts:', error);
+  }
+
   const blogPages: MetadataRoute.Sitemap = [
     {
       url: absoluteUrl('/blog'),
@@ -21,12 +37,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: 'weekly',
       priority: 0.8,
     },
-    ...getAllPosts().map((post) => ({
-      url: absoluteUrl(`/blog/${post.slug}`),
-      lastModified: new Date(post.date),
-      changeFrequency: 'monthly' as const,
-      priority: 0.7,
-    })),
+    ...dynamicBlogPages,
   ];
 
   const useCasePages: MetadataRoute.Sitemap = [
